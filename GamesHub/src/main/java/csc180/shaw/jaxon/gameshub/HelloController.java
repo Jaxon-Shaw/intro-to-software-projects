@@ -31,20 +31,20 @@ public class HelloController {
 
     @FXML
     protected void cookieClickerGameLauncher() {
-//        try {
-//            changeScene("cookie-clicker-view.fxml", "Cookie Clicker");
-//        } catch (IOException ioe) {
-//            ioe.printStackTrace();
-//        }
+        try {
+            changeScene("cookie-clicker-view.fxml", "Cookie Clicker");
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
     }
 
     @FXML
     protected void blockFillGameLauncher() {
-//        try {
-//            changeScene("block-fill-view.fxml", "Block Fill");
-//        } catch (IOException ioe) {
-//            ioe.printStackTrace();
-//        }
+        try {
+            changeScene("block-fill-view.fxml", "Block Fill");
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
     }
 
     public <T> T changeScene(String viewName, String title) throws IOException {

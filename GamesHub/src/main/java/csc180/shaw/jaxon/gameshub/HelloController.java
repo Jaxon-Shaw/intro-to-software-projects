@@ -13,11 +13,11 @@ public class HelloController {
 
     @FXML
     protected void sodokuGameLauncher() {
-//        try {
-//            changeScene("sudoku-view.fxml", "Sudoku");
-//        } catch (IOException ioe) {
-//            ioe.printStackTrace();
-//        }
+        try {
+            changeScene("adoku-view.fxml", "Adoku");
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
     }
 
     @FXML

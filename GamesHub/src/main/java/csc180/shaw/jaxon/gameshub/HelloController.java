@@ -13,22 +13,38 @@ public class HelloController {
 
     @FXML
     protected void sodokuGameLauncher() {
-//        changeScene();
+//        try {
+//            changeScene("sudoku-view.fxml", "Sudoku");
+//        } catch (IOException ioe) {
+//            ioe.printStackTrace();
+//        }
     }
 
     @FXML
     protected void battleshipGameLauncher() {
-
+        try {
+            changeScene("battleship-view.fxml", "Battleship");
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
     }
 
     @FXML
     protected void cookieClickerGameLauncher() {
-
+//        try {
+//            changeScene("cookie-clicker-view.fxml", "Cookie Clicker");
+//        } catch (IOException ioe) {
+//            ioe.printStackTrace();
+//        }
     }
 
     @FXML
     protected void blockFillGameLauncher() {
-
+//        try {
+//            changeScene("block-fill-view.fxml", "Block Fill");
+//        } catch (IOException ioe) {
+//            ioe.printStackTrace();
+//        }
     }
 
     public <T> T changeScene(String viewName, String title) throws IOException {

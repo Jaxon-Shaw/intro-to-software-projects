@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="csc180.shaw.jaxon.gameshub.HelloController">
+<VBox alignment="CENTER" prefHeight="399.0" prefWidth="531.0" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="csc180.shaw.jaxon.gameshub.HelloController">
     <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
 
-    <Label fx:id="welcomeText"/>
-    <Button text="Hello!" onAction="#onHelloButtonClick"/>
+    <Label fx:id="welcomeText" alignment="TOP_CENTER" prefWidth="160.0" text="Welcome to the Hub" />
+   <Label text="Please choose a game" />
+    <Button fx:id="sodokuid" onAction="#sodokuGameLauncher" text="Sodoku" />
+   <Button fx:id="battleshipid" mnemonicParsing="false" onAction="#battleshipGameLauncher" text="Battleship" />
+   <Button fx:id="cookieclickerid" mnemonicParsing="false" onAction="#cookieClickerGameLauncher" text="Cookie Clicker" />
+   <Button fx:id="blockfillid" mnemonicParsing="false" onAction="#blockFillGameLauncher" text="Block Fill" />
 </VBox>

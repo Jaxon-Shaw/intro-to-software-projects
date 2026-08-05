@@ -11,7 +11,7 @@
 
     <Label fx:id="welcomeText" alignment="TOP_CENTER" prefWidth="160.0" text="Welcome to the Hub" />
    <Label text="Please choose a game" />
-    <Button fx:id="sodokuid" onAction="#sodokuGameLauncher" text="Sodoku" />
+    <Button fx:id="sodokuid" onAction="#sodokuGameLauncher" text="Sudoku" />
    <Button fx:id="battleshipid" mnemonicParsing="false" onAction="#battleshipGameLauncher" text="Battleship" />
    <Button fx:id="cookieclickerid" mnemonicParsing="false" onAction="#cookieClickerGameLauncher" text="Cookie Clicker" />
    <Button fx:id="blockfillid" mnemonicParsing="false" onAction="#blockFillGameLauncher" text="Block Fill" />

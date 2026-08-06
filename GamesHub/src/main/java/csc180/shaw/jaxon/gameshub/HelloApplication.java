@@ -17,7 +17,7 @@ public class HelloApplication extends Application {
 
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("menu-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 600, 500);
-        stage.setTitle("Hello!");
+        stage.setTitle("Main Menu");
         stage.setScene(scene);
         stage.show();
     }

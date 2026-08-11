@@ -1,14 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="csc180.shaw.jaxon.gameshub.cookieCliker.CookieClikerController"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane prefHeight="990.0" prefWidth="1710.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="csc180.shaw.jaxon.gameshub.cookieCliker.CookieClikerController">
+   <BorderPane layoutX="-375.0" layoutY="-15.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1349.0" prefWidth="1129.0" style="-fx-background-color: #2B93D9;" />
+    <Button fx:id="exitButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onExitButtonClick" prefHeight="45.0" prefWidth="131.0" text="Exit to Main Menu" />
+   <Circle fx:id="cookieClick" accessibleRole="BUTTON" layoutX="362.0" layoutY="371.0" onMouseClicked="#clicking" radius="209.0" stroke="#776950" strokeLineCap="ROUND" strokeType="INSIDE">
+      <fill>
+         <LinearGradient endX="0.06309147888929685" startX="1.0" startY="1.0">
+            <stops>
+               <Stop>
+                  <color>
+                     <Color red="0.6315789222717285" green="0.4911305904388428" blue="0.376218318939209" />
+                  </color>
+               </Stop>
+               <Stop offset="1.0">
+                  <color>
+                     <Color red="0.41228070855140686" green="0.3516262471675873" blue="0.24685943126678467" />
+                  </color>
+               </Stop>
+            </stops>
+         </LinearGradient>
+      </fill></Circle>
+   <Text fx:id="cookieCount" layoutX="153.0" layoutY="155.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cookies: 0" textAlignment="CENTER" wrappingWidth="418.0">
+      <font>
+         <Font size="24.0" />
+      </font>
+   </Text>
+   <BorderPane layoutX="745.0" layoutY="-59.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1392.0" prefWidth="1129.0" style="-fx-border-color: #A86E40; -fx-border-width: 10; -fx-background-color: #2E1B12;" />
 </AnchorPane>

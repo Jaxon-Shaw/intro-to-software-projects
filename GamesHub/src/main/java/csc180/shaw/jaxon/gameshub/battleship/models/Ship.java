@@ -2,13 +2,14 @@ package csc180.shaw.jaxon.gameshub.battleship.models;
 
 public class Ship {
     public final ShipType type;
-    private Facing facing;
+    public final Facing facing;
     private int size;
     private int health;
     private Coordinate[] coordinates;
 
-    Ship(ShipType type) {
+    Ship(ShipType type,  Facing facing) {
         this.type = type;
+        this.facing = facing;
         setSize();
         setHealth();
     }
@@ -37,12 +38,5 @@ public class Ship {
     }
     public void setCoordinates(Coordinate[] coordinates) {
         this.coordinates = coordinates;
-    }
-
-    public Facing getFacing() {
-        return facing;
-    }
-    public void setFacing(Facing facing) {
-        this.facing = facing;
     }
 }

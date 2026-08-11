@@ -25,5 +25,4 @@ public class Cell {
     public boolean placeShip() {
         return true;
     }
-    
 }

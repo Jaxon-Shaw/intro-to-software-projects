@@ -40,7 +40,7 @@ public class HelloController {
     @FXML
     protected void blockFillGameLauncher() {
         try {
-            changeScene("blockFillViews/block-fill-view.fxml", "Block Fill", true);
+            changeScene("blockFillViews/block-fill-view.fxml", "Block Fill", false);
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }

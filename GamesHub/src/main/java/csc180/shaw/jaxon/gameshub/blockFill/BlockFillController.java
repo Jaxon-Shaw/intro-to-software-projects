@@ -19,7 +19,7 @@ public class BlockFillController {
     @FXML
     protected void easyModeButtonClick() {
         try {
-            changeScene("menu-view.fxml", "Main Menu", false);
+            changeScene("blockFillViews/block-fill-game-board-easy.fxml", "Block Fill", true);
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
@@ -28,7 +28,7 @@ public class BlockFillController {
     @FXML
     protected void hardModeButtonClick() {
         try {
-            changeScene("menu-view.fxml", "Main Menu", false);
+            changeScene("blockFillViews/block-fill-game-board-hard.fxml", "Block Fill", true);
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }

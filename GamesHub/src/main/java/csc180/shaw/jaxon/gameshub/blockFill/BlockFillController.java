@@ -1,7 +1,7 @@
 package csc180.shaw.jaxon.gameshub.blockFill;
 
 import javafx.fxml.FXML;
-
+import java.util.Random;
 import java.io.IOException;
 
 import static csc180.shaw.jaxon.gameshub.HelloController.getT;
@@ -17,7 +17,7 @@ public class BlockFillController {
     }
 
     @FXML
-    protected void easyModeButtonClick() {
+    protected void onEasyButtonClick() {
         try {
             changeScene("blockFillViews/block-fill-game-board-easy.fxml", "Block Fill", true);
         } catch (IOException ioe) {
@@ -26,9 +26,18 @@ public class BlockFillController {
     }
 
     @FXML
-    protected void hardModeButtonClick() {
+    protected void onHardButtonClick() {
         try {
             changeScene("blockFillViews/block-fill-game-board-hard.fxml", "Block Fill", true);
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+    }
+
+    @FXML
+    protected void onDifficultySelectClick() {
+        try {
+            changeScene("blockFillViews/block-fill-view.fxml", "Block Fill", false);
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }

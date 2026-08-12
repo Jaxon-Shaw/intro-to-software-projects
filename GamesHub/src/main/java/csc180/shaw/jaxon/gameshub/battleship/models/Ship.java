@@ -1,5 +1,7 @@
 package csc180.shaw.jaxon.gameshub.battleship.models;
 
+import java.util.Arrays;
+
 public class Ship {
     public final ShipType type;
     public final Facing facing;

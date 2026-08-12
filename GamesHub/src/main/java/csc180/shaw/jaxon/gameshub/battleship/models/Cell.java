@@ -1,8 +1,8 @@
 package csc180.shaw.jaxon.gameshub.battleship.models;
 
 public class Cell {
-    private boolean hasShip;
-    private boolean wasHit;
+    private boolean hasShip = false;
+    private boolean wasHit = false;
 
     public boolean hasShip() {
         return hasShip;

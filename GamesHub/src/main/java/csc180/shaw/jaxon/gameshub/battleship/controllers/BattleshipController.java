@@ -23,15 +23,15 @@ public class BattleshipController {
     @FXML
     private AnchorPane facingMenu;
     @FXML
-    private Rectangle carrier;
+    private AnchorPane carrier;
     @FXML
-    private Rectangle submarine;
+    private AnchorPane submarine;
     @FXML
-    private Rectangle battleship;
+    private AnchorPane battleship;
     @FXML
-    private Rectangle cruiser;
+    private AnchorPane cruiser;
     @FXML
-    private Rectangle destroyer;
+    private AnchorPane destroyer;
     @FXML
     private Label instruction;
     @FXML
@@ -174,7 +174,7 @@ public class BattleshipController {
     @FXML
     protected void attackCell(MouseEvent event) {
         String target = ((Node) event.getSource()).getId();
-        System.out.println("attacked " + target);
+
     }
 
     public <T> T changeScene(String viewName, String title, boolean maximized) throws IOException {

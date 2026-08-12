@@ -7,7 +7,7 @@ public class Game {
     public Player currentPlayer = player1;
 
     public void start() {
-        System.out.println("Game Started");
+
     }
 
     public Ship createShip(ShipType type, Facing facing) {

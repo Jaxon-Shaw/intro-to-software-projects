@@ -49,9 +49,9 @@ public class JavaFXDisplay extends GridPane {
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
                 TextField field = new TextField();
-                field.setPrefSize(48, 48);
+                field.setPrefSize(100, 100);
                 field.setAlignment(javafx.geometry.Pos.CENTER);
-                field.setFont(Font.font("Monospaced", FontWeight.BOLD, 18));
+                field.setFont(Font.font("Monospaced", FontWeight.BOLD, 40));
                 field.setBorder(borderFor(row, col));
 
                 final int r = row;
@@ -66,7 +66,7 @@ public class JavaFXDisplay extends GridPane {
                     }
                     if (!filtered.equals(newVal)) {
                         field.setText(filtered);
-                        return; // listener will fire again with the corrected value
+                        return;
                     }
                     if (filtered.isEmpty()) {
                         return;

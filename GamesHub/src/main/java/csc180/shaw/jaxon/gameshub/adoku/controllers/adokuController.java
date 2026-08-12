@@ -10,6 +10,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 
+import java.io.IOException;
+
+import static csc180.shaw.jaxon.gameshub.HelloController.getT;
+
 public class adokuController {
 
     @FXML
@@ -23,8 +27,21 @@ public class adokuController {
     @FXML
     public void initialize() {
         board = BoardGenerator.generate(new StandardBoard(), 40); // 40 blanks ~ medium
-
         JavaFXDisplay.render(board);
+
+    }
+
+    @FXML
+    protected void onExitButtonClick() {
+        try {
+            changeScene("menu-view.fxml", "Main Menu", false);
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+    }
+
+    public <T> T changeScene(String viewName, String title, boolean maximized) throws IOException {
+        return getT(viewName, title, maximized);
     }
 
 }

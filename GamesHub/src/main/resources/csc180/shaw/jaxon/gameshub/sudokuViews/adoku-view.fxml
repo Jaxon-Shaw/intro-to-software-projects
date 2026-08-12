@@ -58,8 +58,8 @@
             <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="102.0" text="9" GridPane.columnIndex="8" />
          </children>
       </GridPane>
-      <ImageView fitHeight="678.0" fitWidth="514.0" layoutX="892.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true">
-          <Image url="@Ado - Copy.jpeg"/>
+      <ImageView fitHeight="489.0" fitWidth="514.0" layoutX="894.0" layoutY="188.0" pickOnBounds="true" preserveRatio="true">
+          <Image url="@Ado - Copy.jpeg" />
       </ImageView>
    </children>
 </AnchorPane>

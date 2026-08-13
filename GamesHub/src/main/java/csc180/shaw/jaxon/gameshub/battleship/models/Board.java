@@ -2,6 +2,7 @@ package csc180.shaw.jaxon.gameshub.battleship.models;
 
 public class Board {
     private Cell[][] cells = new Cell[10][10];
+    private final int ZERO_BASED_OFFSET = 1;
 
     Board() {
         createBoard();
@@ -65,19 +66,19 @@ public class Board {
         int rowChange = 0;
         int columnChange = 0;
         if (facing == Facing.NORTH) {
-            if (coordinate.x + length > 9) return false;
+            if (coordinate.x + length > 10) return false;
             rowChange = 1;
         }
         else if (facing == Facing.EAST) {
-            if (coordinate.y - length < 0) return false;
+            if (coordinate.y - length + ZERO_BASED_OFFSET < 0) return false;
             columnChange = -1;
         }
         else if (facing == Facing.SOUTH) {
-            if (coordinate.x - length < 0) return false;
+            if (coordinate.x - length + ZERO_BASED_OFFSET < 0) return false;
             rowChange = -1;
         }
         else if (facing == Facing.WEST) {
-            if (coordinate.y + length > 9) return false;
+            if (coordinate.y + length > 10) return false;
             columnChange = 1;
         }
         for (int i = 0; i < length; i++) {

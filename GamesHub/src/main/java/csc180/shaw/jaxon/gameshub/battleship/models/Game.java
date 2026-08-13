@@ -7,7 +7,8 @@ public class Game {
     public Player currentPlayer = player1;
 
     public void start() {
-
+        player1.fog = player2.board;
+        player2.fog = player1.board;
     }
 
     public Ship createShip(ShipType type, Facing facing) {

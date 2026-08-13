@@ -1,21 +1,27 @@
 package csc180.shaw.jaxon.gameshub.battleship.controllers;
 
+import csc180.shaw.jaxon.gameshub.HelloApplication;
+import csc180.shaw.jaxon.gameshub.HelloController;
 import csc180.shaw.jaxon.gameshub.battleship.models.*;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
 import static csc180.shaw.jaxon.gameshub.HelloController.getT;
 
-public class BattleshipController {
-    public Game game = new Game();
+public class PlacementController {
+    public final Game game = new Game();
     private ShipType selectedShipType;
     private Facing selectedFacing;
     private Ship currentShip;
@@ -39,8 +45,6 @@ public class BattleshipController {
     @FXML
     private GridPane gameBoardDisplay;
     @FXML
-    private GridPane fogBoard;
-    @FXML
     private Rectangle shipSelectBlocker;
 
     @FXML
@@ -54,18 +58,14 @@ public class BattleshipController {
 
     @FXML
     public void initialize() {
-        createBoard(gameBoardDisplay, true);
-        createBoard(fogBoard, false);
+        createBoard();
         game.start();
     }
 
-    /**
-     * fills GridPane with rectangles
-     * adds an on click function to the rectangles if displayBoard is true
-     * @param board which GridPane board is being filled
-     * @param displayBoard boolean that allows board to be interacted with
-     */
-    private void createBoard(GridPane board, boolean displayBoard) {
+
+    private void createBoard() {
+        gameBoardDisplay.getChildren().clear();
+
         for (int row = 0; row < 10; row++) {
             for (int col = 0; col < 10; col++) {
 
@@ -75,10 +75,9 @@ public class BattleshipController {
                 cell.setId(row+" "+col);
                 cell.setFill(Color.DODGERBLUE);
                 cell.setStroke(Color.BLACK);
-                if (displayBoard) cell.setOnMousePressed(this::boardCellClicked);
-                else cell.setOnMousePressed(this::attackCell);
+                cell.setOnMousePressed(this::boardCellClicked);
 
-                board.add(cell, col, row);
+                gameBoardDisplay.add(cell, col, row);
             }
         }
     }
@@ -138,18 +137,20 @@ public class BattleshipController {
 
     @FXML
     protected void boardCellClicked(MouseEvent event) {
-        String target = ((Node) event.getSource()).getId();
-        int row = Integer.parseInt(String.valueOf(target.charAt(0)));
-        int col = Integer.parseInt(String.valueOf(target.charAt(2)));
+        if (currentShip != null) {
+            String target = ((Node) event.getSource()).getId();
+            int row = Integer.parseInt(String.valueOf(target.charAt(0)));
+            int col = Integer.parseInt(String.valueOf(target.charAt(2)));
 
-        if (!game.placeShip(currentShip, new Coordinate(row, col))) {
-            invalid.setVisible(true);
-        }
-        else {
-            invalid.setVisible(false);
-            instruction.setVisible(false);
-            shipSelectBlocker.setVisible(false);
-            redrawBoard();
+            if (!game.placeShip(currentShip, new Coordinate(row, col))) {
+                invalid.setVisible(true);
+            } else {
+                invalid.setVisible(false);
+                instruction.setVisible(false);
+                shipSelectBlocker.setVisible(false);
+                currentShip = null;
+                redrawBoard();
+            }
         }
     }
 
@@ -161,36 +162,36 @@ public class BattleshipController {
             int colIndex = (columnIndex == null) ? 0 : columnIndex;
             int rowIdx = (rowIndex == null) ? 0 : rowIndex;
 
-            for (int row = 0; row < 10; row++) {
-                for (int col = 0; col < 10; col++) {
-                    if (colIndex == col && rowIdx == row && game.currentPlayer.board.getCell(new Coordinate(row, col)).hasShip()) {
-                        ((Rectangle) node).setFill(Color.GREEN);
-                    }
-                }
+            if (game.currentPlayer.board.getCell(new Coordinate(rowIdx, colIndex)).hasShip()) {
+                ((Rectangle) node).setFill(Color.GREEN);
             }
         }
     }
 
-    @FXML
-    protected void attackCell(MouseEvent event) {
-        String target = ((Node) event.getSource()).getId();
-
+    public static <T> T changeScene(String viewName, String title, boolean maximized) throws IOException {
+        return HelloController.getT(viewName, title, maximized);
     }
 
-    public <T> T changeScene(String viewName, String title, boolean maximized) throws IOException {
-        return getT(viewName, title, maximized);
+    //TODO remove later
+    @FXML
+    private void change() throws IOException {
+        getT("battleshipViews/attack-view.fxml", "Battleship");
+    }
+
+    public <T> T getT(String viewName, String title) throws IOException {
+        FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("/csc180/shaw/jaxon/gameshub/" + viewName));
+        Parent root = loader.load();
+
+        AttackController controller = loader.getController();
+        controller.setGame(game);
+
+        Stage stage = HelloApplication.primaryStage;
+        Scene scene = new Scene(root);
+        stage.setMaximized(true);
+        stage.setScene(scene);
+        stage.setTitle(title);
+        stage.show();
+
+        return loader.getController();
     }
 }
-
-// how to change color inside
-//        for (javafx.scene.Node node : gameBoardDisplay.getChildren()) {
-//            Integer columnIndex = GridPane.getColumnIndex(node);
-//            Integer rowIndex = GridPane.getRowIndex(node);
-//
-//            int colIndex = (columnIndex == null) ? 0 : columnIndex;
-//            int rowIdx = (rowIndex == null) ? 0 : rowIndex;
-//
-//            if (colIndex == col && rowIdx == row) {
-//                ((Rectangle) node).setFill(Color.GREEN);
-//            }
-//        }

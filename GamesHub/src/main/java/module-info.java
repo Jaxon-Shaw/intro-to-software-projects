@@ -1,6 +1,7 @@
 module csc180.shaw.jaxon.gameshub {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.desktop;
 
     opens csc180.shaw.jaxon.gameshub.battleship.controllers to javafx.fxml;
     opens csc180.shaw.jaxon.gameshub.blockFill to javafx.fxml;

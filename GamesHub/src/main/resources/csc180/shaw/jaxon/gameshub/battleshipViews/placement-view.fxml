@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<!--height: 990 - width: 1710-->
+
+<AnchorPane prefHeight="990.0" prefWidth="1710.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="csc180.shaw.jaxon.gameshub.battleship.controllers.PlacementController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b3b3b3" height="990.0" layoutX="7.0" stroke="BLACK" strokeType="INSIDE" width="1710.0" AnchorPane.bottomAnchor="0.0" />
+      <AnchorPane layoutX="498.0" layoutY="125.0" prefHeight="726.0" prefWidth="727.0">
+         <children>
+            <Label layoutX="58.0" text="A" />
+            <Label layoutX="130.0" text="B" />
+            <Label layoutX="197.0" text="C" />
+            <Label layoutX="262.0" text="D" />
+            <Label layoutX="334.0" text="E" />
+            <Label layoutX="407.0" text="F" />
+            <Label layoutX="479.0" text="G" />
+            <Label layoutX="544.0" text="H" />
+            <Label layoutX="616.0" text="I" />
+            <Label layoutX="683.0" text="J" />
+            <Label layoutX="4.0" layoutY="46.0" text="1" />
+            <Label layoutX="4.0" layoutY="114.0" text="2" />
+            <Label layoutX="4.0" layoutY="183.0" text="3" />
+            <Label layoutX="4.0" layoutY="251.0" text="4" />
+            <Label layoutX="4.0" layoutY="328.0" text="5" />
+            <Label layoutX="4.0" layoutY="396.0" text="6" />
+            <Label layoutX="4.0" layoutY="465.0" text="7" />
+            <Label layoutX="4.0" layoutY="533.0" text="8" />
+            <Label layoutX="4.0" layoutY="601.0" text="9" />
+            <Label layoutY="669.0" text="10" />
+         </children></AnchorPane>
+      <Label layoutX="816.0" layoutY="91.0" text="Player Board">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+      <Label fx:id="instruction" layoutX="773.0" layoutY="53.0" text="Click on a cell to place your ship" visible="false">
+         <font>
+            <Font size="14.0" />
+         </font></Label>
+      <Label fx:id="invalid" layoutX="784.0" layoutY="73.0" text="Invalid placement: pick again" visible="false">
+         <font>
+            <Font size="14.0" />
+         </font></Label>
+      <GridPane fx:id="gameBoardDisplay" gridLinesVisible="true" layoutX="523.0" layoutY="145.0" prefHeight="700.0" prefWidth="700.0">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+      </GridPane>
+      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onExitButtonClick" text="Exit to Main Menu" />
+      <AnchorPane fx:id="facingMenu" layoutX="719.0" layoutY="414.0" prefHeight="231.0" prefWidth="273.0" visible="false">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#626262" height="231.0" stroke="BLACK" strokeType="INSIDE" width="273.0" />
+            <Button fx:id="North" layoutX="112.0" layoutY="54.0" minWidth="50.0" mnemonicParsing="false" onMousePressed="#getOrientation" text="North" />
+            <Button fx:id="East" layoutX="185.0" layoutY="115.0" minWidth="50.0" mnemonicParsing="false" onMousePressed="#getOrientation" text="East" />
+            <Button fx:id="South" layoutX="112.0" layoutY="176.0" minWidth="50.0" mnemonicParsing="false" onMousePressed="#getOrientation" text="South" />
+            <Button fx:id="West" layoutX="39.0" layoutY="115.0" minWidth="50.0" mnemonicParsing="false" onMousePressed="#getOrientation" text="West" />
+            <Label layoutX="55.0" layoutY="22.0" text="which direction will this ship face?" textFill="WHITE" />
+            <Ellipse fill="#aeaaaa" layoutX="137.0" layoutY="128.0" radiusX="48.0" radiusY="48.0" stroke="BLACK" strokeType="INSIDE" />
+            <Polygon fill="RED" layoutX="137.0" layoutY="115.0" scaleX="0.2" scaleY="0.5" stroke="BLACK" strokeType="INSIDE">
+              <points>
+                <Double fx:value="-50.0" />
+                <Double fx:value="40.0" />
+                <Double fx:value="50.0" />
+                <Double fx:value="40.0" />
+                <Double fx:value="0.0" />
+                <Double fx:value="-60.0" />
+              </points>
+            </Polygon>
+            <Polygon fill="WHITE" layoutX="137.0" layoutY="162.0" scaleX="0.2" scaleY="-0.47" stroke="BLACK" strokeType="INSIDE">
+               <points>
+                  <Double fx:value="-50.0" />
+                  <Double fx:value="40.0" />
+                  <Double fx:value="50.0" />
+                  <Double fx:value="40.0" />
+                  <Double fx:value="0.0" />
+                  <Double fx:value="-60.0" />
+               </points>
+            </Polygon>
+            <Ellipse layoutX="137.0" layoutY="129.0" radiusX="4.0" radiusY="4.0" stroke="BLACK" strokeType="INSIDE" />
+         </children>
+         <opaqueInsets>
+            <Insets bottom="1.0" left="11.0" right="1111.0" top="111.0" />
+         </opaqueInsets>
+      </AnchorPane>
+      <Label layoutX="826.0" layoutY="860.0" text="Ship Select">
+         <font>
+            <Font size="15.0" />
+         </font></Label>
+      <AnchorPane fx:id="carrier" layoutX="603.0" layoutY="882.0" onMousePressed="#selectShip" prefHeight="90.0" prefWidth="130.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#009805" height="90.0" layoutY="3.0" stroke="BLACK" strokeType="INSIDE" width="130.0" />
+            <GridPane gridLinesVisible="true" layoutY="3.0" maxHeight="90.0" maxWidth="130.0" prefHeight="90.0">
+              <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="battleship" layoutX="755.0" layoutY="882.0" onMousePressed="#selectShip" prefHeight="90.0" prefWidth="104.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#009805" height="90.0" layoutY="3.0" stroke="BLACK" strokeType="INSIDE" width="104.0" />
+            <GridPane gridLinesVisible="true" layoutY="3.0" maxHeight="90.0" maxWidth="104.0" prefHeight="90.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+            </GridPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="cruiser" layoutX="880.0" layoutY="882.0" onMousePressed="#selectShip" prefHeight="90.0" prefWidth="78.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#009805" height="90.0" layoutY="3.0" stroke="BLACK" strokeType="INSIDE" width="78.0" />
+            <GridPane gridLinesVisible="true" layoutY="3.0" maxHeight="90.0" maxWidth="78.0" prefHeight="90.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+            </GridPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="submarine" layoutX="977.0" layoutY="882.0" onMousePressed="#selectShip" prefHeight="90.0" prefWidth="78.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#009805" height="90.0" layoutY="3.0" stroke="BLACK" strokeType="INSIDE" width="78.0" />
+            <GridPane gridLinesVisible="true" layoutY="3.0" maxHeight="90.0" maxWidth="78.0" prefHeight="90.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+            </GridPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="destroyer" layoutX="1073.0" layoutY="882.0" onMousePressed="#selectShip" prefHeight="90.0" prefWidth="52.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#009805" height="90.0" layoutY="3.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
+            <GridPane gridLinesVisible="true" layoutY="3.0" maxHeight="90.0" maxWidth="52.0" prefHeight="90.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+            </GridPane>
+         </children>
+      </AnchorPane>
+      <Rectangle fx:id="shipSelectBlocker" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="126.0" layoutX="550.0" layoutY="860.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" visible="false" width="610.0" />
+      <Button fx:id="change" layoutX="33.0" layoutY="214.0" mnemonicParsing="false" onMousePressed="#change" text="TESTING ATTACK SCREEN REMOVE LATER">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Button>
+   </children>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
+</AnchorPane>

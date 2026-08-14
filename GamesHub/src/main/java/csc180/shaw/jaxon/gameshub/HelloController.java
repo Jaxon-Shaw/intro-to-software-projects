@@ -1,7 +1,9 @@
 package csc180.shaw.jaxon.gameshub;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -44,6 +46,12 @@ public class HelloController {
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
+    }
+
+    @FXML
+    protected void closeButtonClick(ActionEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.close();
     }
 
     public <T> T changeScene(String viewName, String title, boolean maximized) throws IOException {

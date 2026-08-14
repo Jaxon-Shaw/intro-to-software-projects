@@ -2,17 +2,24 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
 <VBox alignment="CENTER" prefHeight="500" prefWidth="600" spacing="20.0" style="-fx-background-color: #f1e8b8;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="csc180.shaw.jaxon.gameshub.HelloController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
+   <ImageView fitHeight="58.0" fitWidth="158.0" pickOnBounds="true" preserveRatio="true">
+        <image>
+            <Image url="@GameHub.png" />
+        </image>
+   </ImageView>
 
     <Label fx:id="welcomeText" alignment="TOP_CENTER" prefHeight="45.0" prefWidth="318.0" style="-fx-font-size: 30px;" text="Welcome to the Hub" />
    <Label style="-fx-font-size: 20px;" text="Please choose a game:" />
-    <Button fx:id="sodokuid" onAction="#sodokuGameLauncher" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #f9e784; -fx-border-color: #000; -fx-border-radius: 5px; -fx-background-radius: 5px; -fx-cursor: hand;" text="Sudoku" />
-   <Button fx:id="battleshipid" mnemonicParsing="false" onAction="#battleshipGameLauncher" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #505050; -fx-text-fill: #fff; -fx-border-color: #000; -fx-border-radius: 5px; -fx-background-radius: 5px; -fx-cursor: hand;" text="Battleship" />
-   <Button fx:id="cookieclickerid" mnemonicParsing="false" onAction="#cookieClickerGameLauncher" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #e58f65; -fx-text-fill: #fff; -fx-border-color: #000; -fx-border-radius: 5px; -fx-background-radius: 5px; -fx-cursor: hand;" text="Cookie Clicker" />
-   <Button fx:id="blockfillid" mnemonicParsing="false" onAction="#blockFillGameLauncher" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #d05353; -fx-text-fill: #fff; -fx-border-color: #000; -fx-border-radius: 5px; -fx-background-radius: 5px; -fx-cursor: hand;" text="Block Fill" />
+    <Button fx:id="sodokuid" onAction="#sodokuGameLauncher" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #f9e784; -fx-border-color: #000; -fx-border-radius: 7px; -fx-background-radius: 10px; -fx-cursor: hand;" text="Sudoku" />
+   <Button fx:id="battleshipid" mnemonicParsing="false" onAction="#battleshipGameLauncher" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #505050; -fx-text-fill: #fff; -fx-border-color: #000; -fx-border-radius: 7px; -fx-background-radius: 10px; -fx-cursor: hand;" text="Battleship" />
+   <Button fx:id="cookieclickerid" mnemonicParsing="false" onAction="#cookieClickerGameLauncher" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #e58f65; -fx-text-fill: #fff; -fx-border-color: #000; -fx-border-radius: 7px; -fx-background-radius: 10px; -fx-cursor: hand;" text="Cookie Clicker" />
+   <Button fx:id="blockfillid" mnemonicParsing="false" onAction="#blockFillGameLauncher" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #d05353; -fx-text-fill: #fff; -fx-border-color: #000; -fx-border-radius: 7px; -fx-background-radius: 10px; -fx-cursor: hand;" text="Block Fill" />
+   <Button fx:id="closeButton" mnemonicParsing="false" onAction="#closeButtonClick" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #880808; -fx-text-fill: #fff; -fx-background-radius: 10px; -fx-border-radius: 7px; -fx-border-color: #f00; -fx-border-width: 2px; -fx-cursor: hand;" text="Close" />
 </VBox>

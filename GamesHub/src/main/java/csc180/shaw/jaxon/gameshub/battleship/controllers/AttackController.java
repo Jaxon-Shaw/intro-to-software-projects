@@ -30,6 +30,8 @@ public class AttackController {
     @FXML
     protected void initialize() {
         intermissionScreen.setVisible(true);
+        createBoard(77, attackBoardDisplay);
+        createBoard(35, gameBoardDisplay);
     }
 
     @FXML
@@ -44,8 +46,6 @@ public class AttackController {
     @FXML
     protected void resumeButtonClick() {
         intermissionScreen.setVisible(false);
-        createBoard(77, attackBoardDisplay);
-        createBoard(35, gameBoardDisplay);
         redrawBoard(gameBoardDisplay, game.currentPlayer.board);
         redrawBoard(attackBoardDisplay, game.currentPlayer.fog);
     }
@@ -77,8 +77,16 @@ public class AttackController {
             int colIndex = (columnIndex == null) ? 0 : columnIndex;
             int rowIdx = (rowIndex == null) ? 0 : rowIndex;
 
-            if (board.getCell(new Coordinate(rowIdx, colIndex)).hasShip()) {
+            Coordinate coordinate = new Coordinate(rowIdx, colIndex);
+
+            if (board.getCell(coordinate).hasShip() && board.getCell(coordinate).isHit()) {
+                ((Rectangle) node).setFill(Color.DARKRED);
+            }
+            else if (board.getCell(coordinate).hasShip()) {
                 ((Rectangle) node).setFill(Color.GREEN);
+            }
+            else if (board.getCell(coordinate).isHit()) {
+                ((Rectangle) node).setFill(Color.GRAY);
             }
 
         }

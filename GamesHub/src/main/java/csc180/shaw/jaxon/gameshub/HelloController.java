@@ -13,7 +13,7 @@ public class HelloController {
     @FXML
     protected void sodokuGameLauncher() {
         try {
-            changeScene("sudokuViews/adoku-view.fxml", "Adoku", true);
+            changeScene("sudokuViews/adoku-view-v2.fxml", "Adoku", true);
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
@@ -22,7 +22,7 @@ public class HelloController {
     @FXML
     protected void battleshipGameLauncher() {
         try {
-            changeScene("battleshipViews/battleship-view.fxml", "Battleship", true);
+            changeScene("battleshipViews/placement-view.fxml", "Battleship", true);
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
@@ -40,7 +40,7 @@ public class HelloController {
     @FXML
     protected void blockFillGameLauncher() {
         try {
-            changeScene("blockFillViews/block-fill-view.fxml", "Block Fill", true);
+            changeScene("blockFillViews/block-fill-view.fxml", "Block Fill", false);
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }

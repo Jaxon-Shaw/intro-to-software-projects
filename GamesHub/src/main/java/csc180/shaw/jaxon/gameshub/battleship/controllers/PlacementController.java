@@ -46,6 +46,8 @@ public class PlacementController {
     private GridPane gameBoardDisplay;
     @FXML
     private Rectangle shipSelectBlocker;
+    @FXML
+    private AnchorPane intermissionScreen;
 
     @FXML
     protected void onExitButtonClick() {
@@ -63,6 +65,9 @@ public class PlacementController {
     }
 
 
+    /**
+     * prefills 10x10 game board with blue squares and adds click functionality
+     */
     private void createBoard() {
         gameBoardDisplay.getChildren().clear();
 
@@ -135,6 +140,14 @@ public class PlacementController {
         instruction.setVisible(true);
     }
 
+    /**
+     * places players currently selected ship on the board
+     * only allows valid placement
+     * prints a message if the placement is not valid
+     * if the player has placed five ships switches active player and notifies the player to trade the screen with them
+     * if the 2nd player has placed all of their ships, switches scenes to the attack-controller
+     * @param event mouse click
+     */
     @FXML
     protected void boardCellClicked(MouseEvent event) {
         if (currentShip != null) {
@@ -150,10 +163,28 @@ public class PlacementController {
                 shipSelectBlocker.setVisible(false);
                 currentShip = null;
                 redrawBoard();
+                if (game.currentPlayer.getFleet().getSize() == 5) {
+                    if (game.isPlayer2()) {
+                        try {
+                            game.switchActivePlayer();
+                            getT("battleshipViews/attack-view.fxml", "Battleship");
+                        } catch (IOException ioe) {
+                            ioe.printStackTrace();
+                        }
+                    }
+                    else {
+                        game.switchActivePlayer();
+                        intermissionScreen.setVisible(true);
+                    }
+                }
             }
         }
     }
 
+    /**
+     * refreshes the board
+     * changes the color of squares with a ship on them to be green
+     */
     protected void redrawBoard() {
         for (javafx.scene.Node node : gameBoardDisplay.getChildren()) {
             Integer columnIndex = GridPane.getColumnIndex(node);
@@ -164,8 +195,26 @@ public class PlacementController {
 
             if (game.currentPlayer.board.getCell(new Coordinate(rowIdx, colIndex)).hasShip()) {
                 ((Rectangle) node).setFill(Color.GREEN);
+
             }
+            else ((Rectangle) node).setFill(Color.DODGERBLUE);
         }
+    }
+
+    /**
+     * redraws the board
+     * resets the ships visibility
+     * turns off the intermission screen
+     */
+    @FXML
+    protected void resumeButtonClick() {
+        redrawBoard();
+        carrier.setVisible(true);
+        battleship.setVisible(true);
+        cruiser.setVisible(true);
+        submarine.setVisible(true);
+        destroyer.setVisible(true);
+        intermissionScreen.setVisible(false);
     }
 
     public static <T> T changeScene(String viewName, String title, boolean maximized) throws IOException {
@@ -175,10 +224,21 @@ public class PlacementController {
     //TODO remove later
     @FXML
     private void change() throws IOException {
-        getT("battleshipViews/attack-view.fxml", "Battleship");
+        if (game.isPlayer2()) {
+            try {
+                game.switchActivePlayer();
+                getT("battleshipViews/attack-view.fxml", "Battleship");
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
+        }
+        else {
+            game.switchActivePlayer();
+            intermissionScreen.setVisible(true);
+        }
     }
 
-    public <T> T getT(String viewName, String title) throws IOException {
+    protected  <T> T getT(String viewName, String title) throws IOException {
         FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("/csc180/shaw/jaxon/gameshub/" + viewName));
         Parent root = loader.load();
 

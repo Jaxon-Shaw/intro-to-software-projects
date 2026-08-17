@@ -196,6 +196,20 @@
             <Font size="20.0" />
          </font>
       </Button>
+       <AnchorPane fx:id="intermissionScreen" prefHeight="990.0" prefWidth="1710.0" visible="false">
+           <children>
+               <Rectangle arcHeight="5.0" arcWidth="5.0" height="990.0" stroke="BLACK" strokeType="INSIDE" width="1710.0" />
+               <Label layoutX="686.0" layoutY="459.0" text="Pass computer to: other player" textFill="WHITE">
+                   <font>
+                       <Font size="25.0" />
+                   </font>
+               </Label>
+               <Button layoutX="739.0" layoutY="511.0" mnemonicParsing="false" onMousePressed="#resumeButtonClick" prefHeight="39.0" prefWidth="231.0" text="Press button when ready">
+                   <font>
+                       <Font size="18.0" />
+                   </font></Button>
+           </children>
+       </AnchorPane>
    </children>
    <opaqueInsets>
       <Insets />

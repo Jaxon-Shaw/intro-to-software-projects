@@ -23,7 +23,6 @@ public class adokuController {
     @FXML
     private ImageView adoImage;
 
-
     private final Image Ado1 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/csc180/shaw/jaxon/gameshub/sudokuViews/adoimages/ado1.png")));
     private final Image Ado2 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/csc180/shaw/jaxon/gameshub/sudokuViews/adoimages/ado2.png")));
     private final Image Ado3 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/csc180/shaw/jaxon/gameshub/sudokuViews/adoimages/ado3.png")));
@@ -48,12 +47,16 @@ public class adokuController {
     @FXML
     private JavaFXDisplay JavaFXDisplay;
 
+    @FXML
+    private Label statusLabel;
+
     private GameBoard board;
 
     @FXML
     public void initialize() {
         board = BoardGenerator.generate(new StandardBoard(), 40); // 40 blanks ~ medium
         JavaFXDisplay.render(board);
+        JavaFXDisplay.setOnCellEdit(this::handleCellEdit);
 
     }
 
@@ -137,6 +140,25 @@ public class adokuController {
 
     public <T> T changeScene(String viewName, String title, boolean maximized) throws IOException {
         return getT(viewName, title, maximized);
+    }
+
+        private void handleCellEdit(JavaFXDisplay.CellEdit edit) {
+        if (BoardChecker.isValidMove(board, edit.row(), edit.col(), edit.value())) {
+            board.setValue(edit.row(), edit.col(), edit.value());
+            statusLabel.setText("Move accepted.");
+            System.out.println("Valid move");
+
+            if (board.isComplete()) {
+                statusLabel.setText("Solved! Nice work.");
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Congratulations! You solved the Sudoku!");
+                alert.showAndWait();
+            }
+        } else {
+            statusLabel.setText("Invalid move at (" + edit.row() + ", " + edit.col() + ").");
+            JavaFXDisplay.flagInvalid(edit.row(), edit.col());
+            System.out.println("Invalid move");
+        }
+        JavaFXDisplay.render(board);
     }
 
 }

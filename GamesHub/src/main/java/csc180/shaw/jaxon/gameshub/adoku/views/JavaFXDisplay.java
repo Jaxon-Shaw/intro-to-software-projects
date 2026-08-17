@@ -24,6 +24,9 @@ public class JavaFXDisplay extends GridPane {
     private final int boxSize;
     private final TextField[][] fields;
 
+    private boolean updatingFromModel = false;
+
+
     private Consumer<CellEdit> onCellEdit;
 
     public record CellEdit(int row, int col, int value) {}
@@ -58,6 +61,7 @@ public class JavaFXDisplay extends GridPane {
                 final int c = col;
 
                 field.textProperty().addListener((obs, oldVal, newVal) -> {
+                    if (updatingFromModel) return;
                     if (newVal.equals(oldVal)) return;
 
                     String filtered = newVal.replaceAll("[^0-9]", "");
@@ -111,22 +115,35 @@ public class JavaFXDisplay extends GridPane {
 
     /** Redraws every cell from the current board state. */
     public void render(GameBoard board) {
-        for (int row = 0; row < size; row++) {
-            for (int col = 0; col < size; col++) {
-                var cell = board.getCell(row, col);
-                TextField field = fields[row][col];
+        updatingFromModel = true;
+        try {
+            for (int row = 0; row < size; row++) {
+                for (int col = 0; col < size; col++) {
+                    var cell = board.getCell(row, col);
+                    TextField field = fields[row][col];
 
-                int value = cell.getValue();
-                field.setText(value == 0 ? "" : String.valueOf(value));
+                    int value = cell.getValue();
+                    field.setText(value == 0 ? "" : String.valueOf(value));
 
-                field.setEditable(!cell.isFixed());
-                if (cell.isFixed()) {
-                    field.setStyle("-fx-text-fill: #1a1a1a; -fx-background-color: #e0e0e0; -fx-opacity: 1;");
-                } else {
-                    field.setStyle("-fx-text-fill: #1565c0; -fx-background-color: white;");
+                    field.setEditable(!cell.isFixed());
+                    if (cell.isFixed()) {
+                        field.setStyle("-fx-text-fill: #1a1a1a; -fx-background-color: #e0e0e0; -fx-opacity: 1;");
+                    } else {
+                        field.setStyle("-fx-text-fill: #1565c0; -fx-background-color: white;");
+                    }
                 }
             }
+        } finally {
+            updatingFromModel = false;
         }
+    }
+
+        public void flagInvalid(int row, int col) {
+        fields[row][col].setStyle("-fx-text-fill: #c62828; -fx-background-color: #ffcdd2;");
+    }
+
+    public void setOnCellEdit(Consumer<CellEdit> handler) {
+        this.onCellEdit = handler;
     }
 
 

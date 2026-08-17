@@ -35,7 +35,7 @@ public class AttackController {
     @FXML
     protected void onExitButtonClick() {
         try {
-            PlacementController.changeScene("menu-view.fxml", "Main Menu", false);
+            PlacementController.changeScene("menu-view.fxml", "Main Menu", false, false);
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }

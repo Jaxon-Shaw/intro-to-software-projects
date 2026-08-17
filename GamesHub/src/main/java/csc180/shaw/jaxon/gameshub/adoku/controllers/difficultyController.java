@@ -72,14 +72,14 @@ public class difficultyController {
     @FXML
     protected void onExitButtonClick() {
         try {
-            changeScene("menu-view.fxml", "Main Menu", false);
+            changeScene("menu-view.fxml", "Main Menu", false, true);
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
     }
 
-    public <T> T changeScene(String viewName, String title, boolean maximized) throws IOException {
-        return getT(viewName, title, maximized);
+    public <T> T changeScene(String viewName, String title, boolean maximized, boolean centered) throws IOException {
+        return getT(viewName, title, maximized, centered);
     }
 
     public <T> T loadGame(String viewName, String title, boolean maximized, int difficulty) throws IOException {

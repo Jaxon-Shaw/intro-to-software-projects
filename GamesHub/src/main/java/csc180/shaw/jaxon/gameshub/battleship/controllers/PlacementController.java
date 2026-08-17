@@ -50,7 +50,7 @@ public class PlacementController {
     @FXML
     protected void onExitButtonClick() {
         try {
-            changeScene("menu-view.fxml", "Main Menu", false);
+            changeScene("menu-view.fxml", "Main Menu", false, true);
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
@@ -168,8 +168,8 @@ public class PlacementController {
         }
     }
 
-    public static <T> T changeScene(String viewName, String title, boolean maximized) throws IOException {
-        return HelloController.getT(viewName, title, maximized);
+    public static <T> T changeScene(String viewName, String title, boolean maximized, boolean centered) throws IOException {
+        return HelloController.getT(viewName, title, maximized, centered);
     }
 
     //TODO remove later
@@ -179,7 +179,7 @@ public class PlacementController {
     }
 
     public <T> T getT(String viewName, String title) throws IOException {
-        FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("/csc180/shaw/jaxon/gameshub/" + viewName));
+        FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("/csc180,/shaw/jaxon/gameshub/" + viewName));
         Parent root = loader.load();
 
         AttackController controller = loader.getController();

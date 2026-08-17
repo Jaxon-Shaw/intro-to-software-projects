@@ -8,6 +8,7 @@ import csc180.shaw.jaxon.gameshub.adoku.models.boards.StandardBoard;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -49,6 +50,11 @@ public class adokuController {
 
     @FXML
     private Label statusLabel;
+
+    @FXML
+    private Button button1;
+
+
 
     private GameBoard board;
 
@@ -137,7 +143,7 @@ public class adokuController {
     @FXML
     protected void onExitButtonClick() {
         try {
-            changeScene("menu-view.fxml", "Main Menu", false);
+            changeScene("menu-view.fxml", "Main Menu", false, true);
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
@@ -146,14 +152,14 @@ public class adokuController {
     @FXML
     protected void backToDifficultyClick() {
         try {
-            changeScene("sudokuViews/AdokuDifficulty.fxml", "Difficulty", false);
+            changeScene("sudokuViews/AdokuDifficulty.fxml", "Difficulty", false, true);
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
     }
 
-    public <T> T changeScene(String viewName, String title, boolean maximized) throws IOException {
-        return getT(viewName, title, maximized);
+    public <T> T changeScene(String viewName, String title, boolean maximized, boolean centered) throws IOException {
+        return getT(viewName, title, maximized, centered);
     }
 
         private void handleCellEdit(JavaFXDisplay.CellEdit edit) {

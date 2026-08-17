@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane onDragDetected="#loadMediumButton" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="csc180.shaw.jaxon.gameshub.adoku.controllers.difficultyController">
+   <children>
+
+       <Button fx:id="exitButton" layoutX="43.0" layoutY="54.0" mnemonicParsing="false" onAction="#onExitButtonClick" text="Exit to Main Menu" />
+
+      <Label layoutX="251.0" layoutY="67.0" text="Choose a difficulty" />
+      <Button fx:id="veryEasyButton" layoutX="267.0" layoutY="111.0" mnemonicParsing="false" onAction="#loadVeryEasyButton" text="Very easy" />
+      <Button layoutX="280.0" layoutY="154.0" mnemonicParsing="false" onAction="#loadEasyButton" text="Easy" />
+      <Button layoutX="269.0" layoutY="200.0" mnemonicParsing="false" onAction="#loadMediumButton" text="Medium" />
+      <Button layoutX="279.0" layoutY="240.0" mnemonicParsing="false" onAction="#loadHardButton" text="Hard" />
+      <Button layoutX="265.0" layoutY="282.0" mnemonicParsing="false" onAction="#loadVeryHardButton" text="Very Hard" />
+      <Button layoutX="281.0" layoutY="328.0" mnemonicParsing="false" onAction="#loadTestButton" text="Test" />
+      <ImageView fitHeight="263.0" fitWidth="213.0" layoutX="357.0" layoutY="99.0" pickOnBounds="true" preserveRatio="true" />
+   </children>
+</AnchorPane>

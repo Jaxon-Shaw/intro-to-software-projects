@@ -53,11 +53,16 @@ public class adokuController {
     private GameBoard board;
 
     @FXML
-    public void initialize() {
-        board = BoardGenerator.generate(new StandardBoard(), 40); // 40 blanks ~ medium
+    public void initialize(int difficulty) {
+        board = BoardGenerator.generate(new StandardBoard(), difficulty);
         JavaFXDisplay.render(board);
         JavaFXDisplay.setOnCellEdit(this::handleCellEdit);
 
+    }
+
+
+     public void setBoard(int difficulty) {
+         board = BoardGenerator.generate(new StandardBoard(), difficulty);
     }
 
     @FXML
@@ -133,6 +138,15 @@ public class adokuController {
     protected void onExitButtonClick() {
         try {
             changeScene("menu-view.fxml", "Main Menu", false);
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+    }
+
+    @FXML
+    protected void backToDifficultyClick() {
+        try {
+            changeScene("sudokuViews/AdokuDifficulty.fxml", "Difficulty", false);
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }

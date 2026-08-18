@@ -130,6 +130,12 @@ public class BoardGenerator {
             solved = fillRemaining(grid, size, boxSize, 0, 0);
         }
 
+        for (int row = 0; row < size; row++) {
+            for (int col = 0; col < size; col++) {
+                board.setSolutionValue(row, col, grid[row][col]);
+            }
+        }
+
         removeDigits(grid, size, emptyCells);
 
         for (int row = 0; row < size; row++) {

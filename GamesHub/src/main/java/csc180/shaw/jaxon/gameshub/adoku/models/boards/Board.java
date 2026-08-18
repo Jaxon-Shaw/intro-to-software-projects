@@ -8,10 +8,12 @@ import java.util.ArrayList;
 public class Board extends Cell implements GameBoard {
     private final int size;
     private final Cell[][] cells;
+    private final int[][] solution;
 
     protected Board(int size) {
         this.size = size;
         this.cells = new Cell[size][size];
+        this.solution = new int[size][size];
 
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
@@ -45,5 +47,15 @@ public class Board extends Cell implements GameBoard {
             }
         }
         return true;
+    }
+
+    @Override
+    public int getSolutionValue(int row, int col) {
+        return solution[row][col];
+    }
+
+    @Override
+    public void setSolutionValue(int row, int col, int value) {
+        solution[row][col] = value;
     }
 }

@@ -15,7 +15,7 @@ public class HelloController {
     @FXML
     protected void sodokuGameLauncher() {
         try {
-            changeScene("sudokuViews/AdokuDifficulty.fxml", "Adoku", false, true);
+            changeScene("sudokuViews/AdokuDifficulty.fxml", "Adoku Difficulty", false, true);
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }

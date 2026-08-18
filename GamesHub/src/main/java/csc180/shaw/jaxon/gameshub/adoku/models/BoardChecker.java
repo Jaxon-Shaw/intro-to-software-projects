@@ -16,9 +16,7 @@ public class BoardChecker {
             return false;
         }
 
-        return isRowValid(board, row, value)
-                && isColValid(board, col, value)
-                && isBoxValid(board, row, col, value);
+        return value == board.getSolutionValue(row, col);
     }
 
     private static boolean isRowValid(GameBoard board, int row, int value) {

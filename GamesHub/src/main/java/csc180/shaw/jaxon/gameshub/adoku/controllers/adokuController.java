@@ -9,12 +9,14 @@ import csc180.shaw.jaxon.gameshub.adoku.models.boards.StandardBoard;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Random;
 
 import static csc180.shaw.jaxon.gameshub.HelloController.getT;
@@ -54,9 +56,12 @@ public class adokuController {
     @FXML
     private Button button1;
 
-
+    ButtonType buttonReplay = new ButtonType("Play Again?");
+    ButtonType buttonQuit = new ButtonType("Back to GamesHub");
 
     private GameBoard board;
+
+//    int incorrectMoves = 0;
 
     @FXML
     public void initialize(int difficulty) {
@@ -152,7 +157,7 @@ public class adokuController {
     @FXML
     protected void backToDifficultyClick() {
         try {
-            changeScene("sudokuViews/AdokuDifficulty.fxml", "Difficulty", false, true);
+            changeScene("sudokuViews/AdokuDifficulty.fxml", "Adoku Difficulty", false, true);
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
@@ -162,21 +167,61 @@ public class adokuController {
         return getT(viewName, title, maximized, centered);
     }
 
-        private void handleCellEdit(JavaFXDisplay.CellEdit edit) {
+    private void handleCellEdit(JavaFXDisplay.CellEdit edit) {
         if (BoardChecker.isValidMove(board, edit.row(), edit.col(), edit.value())) {
             board.setValue(edit.row(), edit.col(), edit.value());
-            statusLabel.setText("Move accepted.");
-            System.out.println("Valid move");
+            board.getCell(edit.row(), edit.col()).setFixed(true);
+            statusLabel.setText("Correct!");
 
             if (board.isComplete()) {
                 statusLabel.setText("Solved! Nice work.");
-                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Congratulations! You solved the Sudoku!");
-                alert.showAndWait();
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Congratulations! You solved Adoku!");
+                alert.getButtonTypes().setAll(buttonReplay, buttonQuit);
+
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == buttonReplay) {
+                    try {
+                        changeScene("sudokuViews/AdokuDifficulty.fxml", "Adoku Difficulty", false, true);
+                    } catch (IOException ioe) {
+                        ioe.printStackTrace();
+                    }
+                }
+                else {
+                    try {
+                        changeScene("menu-view.fxml", "Main Menu", false, true);
+                    } catch (IOException ioe) {
+                        ioe.printStackTrace();
+                    }
+                }
             }
         } else {
-            statusLabel.setText("Invalid move at (" + edit.row() + ", " + edit.col() + ").");
-            JavaFXDisplay.flagInvalid(edit.row(), edit.col());
-            System.out.println("Invalid move");
+            statusLabel.setText("Not quite - try again. ");
+
+//            incorrectMoves++;
+//            statusLabel.setText("Not quite - try again. " +  (10 - incorrectMoves) + " chances remaining");
+//            if (incorrectMoves == 10){
+//                statusLabel.setText("You put in too many moves.");
+//                Alert alert = new Alert(Alert.AlertType.INFORMATION, "You wrong moves, game tis over");
+//                alert.setTitle("Game Over");
+//                alert.setHeaderText("");
+//                alert.getButtonTypes().setAll(buttonReplay, buttonQuit);
+//
+//                Optional<ButtonType> result = alert.showAndWait();
+//                if (result.get() == buttonReplay) {
+//                    try {
+//                        changeScene("sudokuViews/AdokuDifficulty.fxml", "Adoku Difficulty", false, true);
+//                    } catch (IOException ioe) {
+//                        ioe.printStackTrace();
+//                    }
+//                }
+//                else {
+//                    try {
+//                        changeScene("menu-view.fxml", "Main Menu", false, true);
+//                    } catch (IOException ioe) {
+//                        ioe.printStackTrace();
+//                    }
+//                }
+//            }
         }
         JavaFXDisplay.render(board);
     }

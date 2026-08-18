@@ -12,7 +12,7 @@ public class Ship {
         this.type = type;
         this.facing = facing;
         setSize();
-        setHealth();
+        setHealth(getSize());
     }
 
     public int getSize() {
@@ -30,8 +30,8 @@ public class Ship {
     public int getHealth() {
         return health;
     }
-    public void setHealth() {
-        this.health = getSize();
+    public void setHealth(int health) {
+        this.health = health;
     }
 
     public Coordinate[] getCoordinates() {
@@ -48,5 +48,10 @@ public class Ship {
             }
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return type.name().toLowerCase();
     }
 }

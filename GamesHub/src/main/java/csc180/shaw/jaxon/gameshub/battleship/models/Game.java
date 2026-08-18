@@ -1,15 +1,18 @@
 package csc180.shaw.jaxon.gameshub.battleship.models;
 
 public class Game {
-    Player player1 = new Player(new Board());
-    Player player2 = new Player(new Board());
+    Player player1;
+    Player player2;
 
-    public Player currentPlayer = player1;
-    public Player enemy = player2;
+    public Player currentPlayer;
+    public Player enemy;
 
-    public void start() {
-//        player1.fog = player2.board;
-//        player2.fog = player1.board;
+    public void start(String p1Name, String p2Name) {
+        player1 = new Player(p1Name, new Board());
+        player2 = new Player(p2Name, new Board());
+
+        currentPlayer = player1;
+        enemy = player2;
     }
 
     public Ship createShip(ShipType type, Facing facing) {
@@ -29,7 +32,23 @@ public class Game {
     }
 
     public boolean attackCell(int row, int col) {
-        return enemy.board.attack(row, col);
+        Coordinate coordinate = new Coordinate(row, col);
+        if (enemy.board.getCell(coordinate).hasShip()) {
+            Ship ship = enemy.getFleet().getShipByCoordinate(coordinate);
+            if (ship != null) {
+                ship.setHealth(ship.getHealth() - 1);
+            }
+        }
+        return enemy.board.attack(coordinate);
+    }
+
+    public boolean shipWasSunk(int row, int col) {
+        Coordinate coordinate = new Coordinate(row, col);
+        Ship ship = enemy.getFleet().getShipByCoordinate(coordinate);
+        if (ship != null) {
+            return ship.getHealth() == 0;
+        }
+        return false;
     }
 
     public void switchActivePlayer() {

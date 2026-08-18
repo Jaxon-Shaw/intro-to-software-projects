@@ -3,10 +3,10 @@ package csc180.shaw.jaxon.gameshub.battleship.models;
 public class Player {
     private String name;
     public Board board;
-//    public Board fog;
     private Fleet fleet = new Fleet();
 
-    Player(Board board) {
+    Player(String name, Board board) {
+        setName(name);
         this.board = board;
     }
 

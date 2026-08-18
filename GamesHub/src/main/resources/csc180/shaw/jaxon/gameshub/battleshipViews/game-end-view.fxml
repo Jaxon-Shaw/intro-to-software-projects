@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.shape.Rectangle?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="csc180.shaw.jaxon.gameshub.battleship.controllers.GameEndController"
+            prefHeight="500.0" prefWidth="600.0">
+    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b3b3b3" height="500.0" layoutY="1.0" stroke="BLACK" strokeType="INSIDE" width="600.0" AnchorPane.bottomAnchor="0.0" />
+    <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onExitButtonClick" text="Exit to Main Menu" />
+
+</AnchorPane>

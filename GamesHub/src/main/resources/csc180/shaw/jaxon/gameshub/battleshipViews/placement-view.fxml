@@ -9,9 +9,10 @@
 
 <!--height: 990 - width: 1710-->
 
-<AnchorPane prefHeight="990.0" prefWidth="1710.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="csc180.shaw.jaxon.gameshub.battleship.controllers.PlacementController">
+<AnchorPane onMouseEntered="#changeName" prefHeight="990.0" prefWidth="1695.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="csc180.shaw.jaxon.gameshub.battleship.controllers.PlacementController">
    <children>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b3b3b3" height="990.0" layoutX="7.0" stroke="BLACK" strokeType="INSIDE" width="1710.0" AnchorPane.bottomAnchor="0.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b3b3b3" height="990.0" layoutX="7.0" onMouseEntered="#changeName" stroke="BLACK" strokeType="INSIDE" width="1695.0" AnchorPane.bottomAnchor="0.0" />
+      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onExitButtonClick" text="Exit to Main Menu" />
       <AnchorPane layoutX="498.0" layoutY="125.0" prefHeight="726.0" prefWidth="727.0">
          <children>
             <Label layoutX="58.0" text="A" />
@@ -35,7 +36,7 @@
             <Label layoutX="4.0" layoutY="601.0" text="9" />
             <Label layoutY="669.0" text="10" />
          </children></AnchorPane>
-      <Label layoutX="816.0" layoutY="91.0" text="Player Board">
+      <Label fx:id="boardName" layoutX="816.0" layoutY="91.0" text="Player Board">
          <font>
             <Font size="20.0" />
          </font></Label>
@@ -73,7 +74,6 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
       </GridPane>
-      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onExitButtonClick" text="Exit to Main Menu" />
       <AnchorPane fx:id="facingMenu" layoutX="719.0" layoutY="414.0" prefHeight="231.0" prefWidth="273.0" visible="false">
          <children>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#626262" height="231.0" stroke="BLACK" strokeType="INSIDE" width="273.0" />
@@ -199,7 +199,7 @@
        <AnchorPane fx:id="intermissionScreen" prefHeight="990.0" prefWidth="1710.0" visible="false">
            <children>
                <Rectangle arcHeight="5.0" arcWidth="5.0" height="990.0" stroke="BLACK" strokeType="INSIDE" width="1710.0" />
-               <Label layoutX="686.0" layoutY="459.0" text="Pass computer to: other player" textFill="WHITE">
+               <Label fx:id="passText" layoutX="716.0" layoutY="459.0" text="Pass computer to: " textFill="WHITE">
                    <font>
                        <Font size="25.0" />
                    </font>

@@ -18,10 +18,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-import static csc180.shaw.jaxon.gameshub.HelloController.getT;
+import static csc180.shaw.jaxon.gameshub.battleship.controllers.StartController.changeScene;
 
 public class PlacementController {
-    public final Game game = new Game();
+    private Game game;
     private ShipType selectedShipType;
     private Facing selectedFacing;
     private Ship currentShip;
@@ -48,6 +48,14 @@ public class PlacementController {
     private Rectangle shipSelectBlocker;
     @FXML
     private AnchorPane intermissionScreen;
+    @FXML
+    private Label boardName;
+    @FXML
+    private Label passText;
+
+    protected void setGame(Game game) {
+        this.game = game;
+    }
 
     @FXML
     protected void onExitButtonClick() {
@@ -58,10 +66,15 @@ public class PlacementController {
         }
     }
 
-    @FXML
     public void initialize() {
         createBoard();
-        game.start();
+    }
+
+    @FXML
+    protected void changeName() {
+        boardName.setText(game.currentPlayer.getName() + "'s Board");
+        double width = boardName.prefWidth(-1);
+        boardName.setLayoutX(875 - width / 2);
     }
 
 
@@ -164,17 +177,10 @@ public class PlacementController {
                 currentShip = null;
                 redrawBoard();
                 if (game.currentPlayer.getFleet().getSize() == 5) {
-                    if (game.isPlayer2()) {
-                        try {
-                            game.switchActivePlayer();
-                            getT("battleshipViews/attack-view.fxml", "Battleship");
-                        } catch (IOException ioe) {
-                            ioe.printStackTrace();
-                        }
-                    }
-                    else {
-                        game.switchActivePlayer();
-                        intermissionScreen.setVisible(true);
+                    try {
+                        change();
+                    } catch (IOException ioe) {
+                        ioe.printStackTrace();
                     }
                 }
             }
@@ -209,6 +215,7 @@ public class PlacementController {
     @FXML
     protected void resumeButtonClick() {
         redrawBoard();
+        changeName();
         carrier.setVisible(true);
         battleship.setVisible(true);
         cruiser.setVisible(true);
@@ -217,29 +224,27 @@ public class PlacementController {
         intermissionScreen.setVisible(false);
     }
 
-    public static <T> T changeScene(String viewName, String title, boolean maximized) throws IOException {
-        return HelloController.getT(viewName, title, maximized);
-    }
-
-    //TODO remove later
     @FXML
     private void change() throws IOException {
         if (game.isPlayer2()) {
             try {
                 game.switchActivePlayer();
-                getT("battleshipViews/attack-view.fxml", "Battleship");
+                getT();
             } catch (IOException ioe) {
                 ioe.printStackTrace();
             }
         }
         else {
+            passText.setText("Pass computer to: " + game.enemy.getName());
+            double width = passText.prefWidth(-1);
+            passText.setLayoutX((double) 1695 / 2 - width / 2);
             game.switchActivePlayer();
             intermissionScreen.setVisible(true);
         }
     }
 
-    protected  <T> T getT(String viewName, String title) throws IOException {
-        FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("/csc180/shaw/jaxon/gameshub/" + viewName));
+    protected  <T> T getT() throws IOException {
+        FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("/csc180/shaw/jaxon/gameshub/" + "battleshipViews/attack-view.fxml"));
         Parent root = loader.load();
 
         AttackController controller = loader.getController();
@@ -249,7 +254,7 @@ public class PlacementController {
         Scene scene = new Scene(root);
         stage.setMaximized(true);
         stage.setScene(scene);
-        stage.setTitle(title);
+        stage.setTitle("Battleship");
         stage.show();
 
         return loader.getController();

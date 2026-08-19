@@ -1,8 +1,9 @@
 package csc180.shaw.jaxon.gameshub.battleship.models;
 
 public class Game {
-    Player player1;
-    Player player2;
+    private Player player1;
+    private Player player2;
+    private boolean winnerIsPlayer2;
 
     public Player currentPlayer;
     public Player enemy;
@@ -13,6 +14,20 @@ public class Game {
 
         currentPlayer = player1;
         enemy = player2;
+    }
+
+    public Player getPlayer2() {
+        return player2;
+    }
+    public Player getPlayer1() {
+        return player1;
+    }
+
+    public boolean winnerIsPlayer2() {
+        return winnerIsPlayer2;
+    }
+    public void setWinnerIsPlayer2(boolean winnerIsPlayer2) {
+        this.winnerIsPlayer2 = winnerIsPlayer2;
     }
 
     public Ship createShip(ShipType type, Facing facing) {

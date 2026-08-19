@@ -130,26 +130,41 @@ public class AttackController {
         int row = Integer.parseInt(String.valueOf(target.charAt(0)));
         int col = Integer.parseInt(String.valueOf(target.charAt(2)));
 
-        boolean hitShip = game.attackCell(row, col);
-        redrawBoard(attackBoardDisplay, game.enemy.board);
-        if (hitShip && game.shipWasSunk(row, col)) {
-            Ship ship = game.enemy.getFleet().getShipByCoordinate(new Coordinate(row, col));
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "You sunk the enemy's " + ship + "!");
-            alert.showAndWait();
-        }
-        if (game.enemy.getFleet().allSunk()) {
-            try {
-                getT("battleshipViews/game-end-view.fxml");
-            } catch (IOException ioe) {
-                ioe.printStackTrace();
+        if (!game.enemy.board.getCell(new Coordinate(row, col)).isHit()) {
+            game.currentPlayer.setAttackCount(game.currentPlayer.getAttackCount() + 1);
+            boolean hitShip = game.attackCell(row, col);
+            redrawBoard(attackBoardDisplay, game.enemy.board);
+            if (hitShip) {
+                game.currentPlayer.setShipsHit(game.currentPlayer.getShipsHit() + 1);
+                if (game.shipWasSunk(row, col)) {
+                    game.currentPlayer.setSankCount(game.currentPlayer.getSankCount() + 1);
+                    Ship ship = game.enemy.getFleet().getShipByCoordinate(new Coordinate(row, col));
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION, "You sunk the enemy's " + ship + "!");
+                    alert.showAndWait();
+                }
+                else {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION, "Hit!");
+                    alert.showAndWait();
+                }
             }
-        }
-        else if (!hitShip) {
-            game.switchActivePlayer();
-            try {
-                change();
-            } catch (IOException ioe) {
-                ioe.printStackTrace();
+            else {
+                game.currentPlayer.setMissCount(game.currentPlayer.getMissCount() + 1);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Miss");
+                alert.showAndWait();
+                game.switchActivePlayer();
+                try {
+                    change();
+                } catch (IOException ioe) {
+                    ioe.printStackTrace();
+                }
+            }
+            if (game.enemy.getFleet().allSunk()) {
+                game.setWinnerIsPlayer2(game.isPlayer2());
+                try {
+                    getT("battleshipViews/game-end-view.fxml");
+                } catch (IOException ioe) {
+                    ioe.printStackTrace();
+                }
             }
         }
     }
@@ -167,11 +182,16 @@ public class AttackController {
             AttackController controller = loader.getController();
             controller.setGame(game);
         }
+        if (loader.getController() instanceof GameEndController) {
+            GameEndController controller = loader.getController();
+            controller.setGame(game);
+        }
 
         Stage stage = HelloApplication.primaryStage;
         Scene scene = new Scene(root);
         stage.setMaximized(true);
         stage.setScene(scene);
+        stage.centerOnScreen();
         stage.setTitle("Battleship");
         stage.show();
 

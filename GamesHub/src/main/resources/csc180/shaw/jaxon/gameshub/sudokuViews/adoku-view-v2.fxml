@@ -13,47 +13,16 @@
     </padding>
     <AnchorPane prefHeight="1300.0" prefWidth="1300.0">
         <children>
-
-            <JavaFXDisplay fx:id="JavaFXDisplay" layoutX="185.0" layoutY="78.0" maxHeight="17.976931348623157E308" maxWidth="17.976931348623157E308" prefHeight="718.0" prefWidth="900.0" />
-
+            <JavaFXDisplay fx:id="JavaFXDisplay" layoutX="185.0" layoutY="78.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="718.0" prefWidth="900.0" />
             <Label fx:id="statusLabel" layoutX="517.0" layoutY="56.0" style="-fx-font-size: 14px; -fx-background-color: white;" text="Fill in the board. Fixed cells are locked." />
-
             <ImageView fitHeight="190.0" fitWidth="192.0" layoutX="13.0" layoutY="134.0" pickOnBounds="true" preserveRatio="true">
                 <Image url="@Ado - Copy.jpeg" />
             </ImageView>
-
             <Button fx:id="exitButton" layoutX="43.0" layoutY="53.0" mnemonicParsing="false" onAction="#onExitButtonClick" text="Exit to Main Menu" />
             <Button fx:id="difficultyButton" layoutX="43.0" layoutY="88.0" mnemonicParsing="false" onAction="#backToDifficultyClick" text="Exit to Difficulty" />
-
-            <GridPane gridLinesVisible="true" layoutX="185.0" layoutY="833.0">
-                <columnConstraints>
-                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                </columnConstraints>
-                <rowConstraints>
-                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                </rowConstraints>
-                <children>
-                    <Button fx:id="button1" mnemonicParsing="false" prefHeight="25.0" prefWidth="98.0" text="1" />
-                    <Button fx:id="button2" mnemonicParsing="false" prefHeight="25.0" prefWidth="97.0" text="2" GridPane.columnIndex="1" />
-                    <Button fx:id="button3" mnemonicParsing="false" prefHeight="25.0" prefWidth="98.0" text="3" GridPane.columnIndex="2" />
-                    <Button fx:id="button4" mnemonicParsing="false" prefHeight="25.0" prefWidth="99.0" text="4" GridPane.columnIndex="3" />
-                    <Button fx:id="button5" mnemonicParsing="false" prefHeight="25.0" prefWidth="99.0" text="5" GridPane.columnIndex="4" />
-                    <Button fx:id="button6" mnemonicParsing="false" prefHeight="25.0" prefWidth="101.0" text="6" GridPane.columnIndex="5" />
-                    <Button fx:id="button7" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" text="7" GridPane.columnIndex="6" />
-                    <Button fx:id="button8" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" text="8" GridPane.columnIndex="7" />
-                    <Button fx:id="button9" mnemonicParsing="false" prefHeight="25.0" prefWidth="102.0" text="9" GridPane.columnIndex="8" />
-                </children>
-            </GridPane>
-         <ImageView fx:id="adoImage" fitHeight="700.0" fitWidth="500.0" layoutX="1131.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true" />
-         <Button layoutX="1298.0" layoutY="820.0" mnemonicParsing="false" onAction="#changeAdoImage" text="Press buttton for motivation" />
+            <ImageView fx:id="adoImage" fitHeight="700.0" fitWidth="500.0" layoutX="1131.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true" />
+            <Button layoutX="1298.0" layoutY="820.0" mnemonicParsing="false" onAction="#changeAdoImage" text="Press buttton for motivation" />
+            <NumberPalette fx:id="numberPalette" layoutX="244.0" layoutY="796.0" prefHeight="90.0" prefWidth="875.0" />
         </children>
     </AnchorPane>
 

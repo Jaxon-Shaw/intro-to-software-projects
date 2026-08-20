@@ -6,6 +6,7 @@ import csc180.shaw.jaxon.gameshub.adoku.models.BoardGenerator;
 import csc180.shaw.jaxon.gameshub.adoku.models.interfaces.GameBoard;
 import csc180.shaw.jaxon.gameshub.adoku.models.boards.StandardBoard;
 
+import csc180.shaw.jaxon.gameshub.adoku.views.NumberPalette;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -22,6 +23,8 @@ import java.util.Random;
 import static csc180.shaw.jaxon.gameshub.HelloController.getT;
 
 public class adokuController {
+
+    public NumberPalette numberPalette;
 
     @FXML
     private ImageView adoImage;
@@ -53,15 +56,12 @@ public class adokuController {
     @FXML
     private Label statusLabel;
 
-    @FXML
-    private Button button1;
-
     ButtonType buttonReplay = new ButtonType("Play Again?");
     ButtonType buttonQuit = new ButtonType("Back to GamesHub");
 
     private GameBoard board;
 
-//    int incorrectMoves = 0;
+    int incorrectMoves = 10;
 
     @FXML
     public void initialize(int difficulty) {
@@ -167,6 +167,7 @@ public class adokuController {
         return getT(viewName, title, maximized, centered);
     }
 
+
     private void handleCellEdit(JavaFXDisplay.CellEdit edit) {
         if (BoardChecker.isValidMove(board, edit.row(), edit.col(), edit.value())) {
             board.setValue(edit.row(), edit.col(), edit.value());
@@ -195,33 +196,31 @@ public class adokuController {
                 }
             }
         } else {
-            statusLabel.setText("Not quite - try again. ");
+            incorrectMoves--;
+            statusLabel.setText("Not quite - try again. " +  (incorrectMoves) + " chances remaining");
+            if (incorrectMoves == 0){
+                statusLabel.setText("You put in too many moves.");
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "You wrong moves, game tis over");
+                alert.setTitle("Game Over");
+                alert.setHeaderText("");
+                alert.getButtonTypes().setAll(buttonReplay, buttonQuit);
 
-//            incorrectMoves++;
-//            statusLabel.setText("Not quite - try again. " +  (10 - incorrectMoves) + " chances remaining");
-//            if (incorrectMoves == 10){
-//                statusLabel.setText("You put in too many moves.");
-//                Alert alert = new Alert(Alert.AlertType.INFORMATION, "You wrong moves, game tis over");
-//                alert.setTitle("Game Over");
-//                alert.setHeaderText("");
-//                alert.getButtonTypes().setAll(buttonReplay, buttonQuit);
-//
-//                Optional<ButtonType> result = alert.showAndWait();
-//                if (result.get() == buttonReplay) {
-//                    try {
-//                        changeScene("sudokuViews/AdokuDifficulty.fxml", "Adoku Difficulty", false, true);
-//                    } catch (IOException ioe) {
-//                        ioe.printStackTrace();
-//                    }
-//                }
-//                else {
-//                    try {
-//                        changeScene("menu-view.fxml", "Main Menu", false, true);
-//                    } catch (IOException ioe) {
-//                        ioe.printStackTrace();
-//                    }
-//                }
-//            }
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == buttonReplay) {
+                    try {
+                        changeScene("sudokuViews/AdokuDifficulty.fxml", "Adoku Difficulty", false, true);
+                    } catch (IOException ioe) {
+                        ioe.printStackTrace();
+                    }
+                }
+                else {
+                    try {
+                        changeScene("menu-view.fxml", "Main Menu", false, true);
+                    } catch (IOException ioe) {
+                        ioe.printStackTrace();
+                    }
+                }
+            }
         }
         JavaFXDisplay.render(board);
     }

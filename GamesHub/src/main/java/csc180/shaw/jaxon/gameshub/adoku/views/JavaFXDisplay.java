@@ -5,6 +5,7 @@ import csc180.shaw.jaxon.gameshub.adoku.models.interfaces.GameBoard;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.TextField;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
@@ -56,6 +57,25 @@ public class JavaFXDisplay extends GridPane {
                 field.setAlignment(javafx.geometry.Pos.CENTER);
                 field.setFont(Font.font("Monospaced", FontWeight.BOLD, 40));
                 field.setBorder(borderFor(row, col));
+
+                field.setOnDragOver(event -> {
+                    if (field.isEditable() && event.getDragboard().hasContent(NumberPalette.SUDOKU_DIGIT)) {
+                        event.acceptTransferModes(TransferMode.COPY);
+                    }
+                    event.consume();
+                });
+
+                field.setOnDragDropped(event -> {
+                    var dragboard = event.getDragboard();
+                    boolean success = false;
+                    if (dragboard.hasContent(NumberPalette.SUDOKU_DIGIT)) {
+                        int value = (int) dragboard.getContent(NumberPalette.SUDOKU_DIGIT);
+                        field.setText(String.valueOf(value)); // reuses the existing textProperty listener pipeline
+                        success = true;
+                    }
+                    event.setDropCompleted(success);
+                    event.consume();
+                });
 
                 final int r = row;
                 final int c = col;

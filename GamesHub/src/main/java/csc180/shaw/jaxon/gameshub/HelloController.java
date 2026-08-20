@@ -24,7 +24,7 @@ public class HelloController {
     @FXML
     protected void battleshipGameLauncher() {
         try {
-            changeScene("battleshipViews/placement-view.fxml", "Battleship", true);
+            changeScene("battleshipViews/game-start-view.fxml", "Battleship", false);
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }

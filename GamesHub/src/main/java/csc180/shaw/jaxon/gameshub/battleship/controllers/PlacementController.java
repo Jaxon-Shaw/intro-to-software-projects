@@ -18,10 +18,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-import static csc180.shaw.jaxon.gameshub.HelloController.getT;
+import static csc180.shaw.jaxon.gameshub.battleship.controllers.StartController.changeScene;
 
 public class PlacementController {
-    public final Game game = new Game();
+    private Game game;
     private ShipType selectedShipType;
     private Facing selectedFacing;
     private Ship currentShip;
@@ -46,6 +46,16 @@ public class PlacementController {
     private GridPane gameBoardDisplay;
     @FXML
     private Rectangle shipSelectBlocker;
+    @FXML
+    private AnchorPane intermissionScreen;
+    @FXML
+    private Label boardName;
+    @FXML
+    private Label passText;
+
+    protected void setGame(Game game) {
+        this.game = game;
+    }
 
     @FXML
     protected void onExitButtonClick() {
@@ -56,13 +66,21 @@ public class PlacementController {
         }
     }
 
-    @FXML
     public void initialize() {
         createBoard();
-        game.start();
+    }
+
+    @FXML
+    protected void changeName() {
+        boardName.setText(game.currentPlayer.getName() + "'s Board");
+        double width = boardName.prefWidth(-1);
+        boardName.setLayoutX(875 - width / 2);
     }
 
 
+    /**
+     * prefills 10x10 game board with blue squares and adds click functionality
+     */
     private void createBoard() {
         gameBoardDisplay.getChildren().clear();
 
@@ -135,6 +153,14 @@ public class PlacementController {
         instruction.setVisible(true);
     }
 
+    /**
+     * places players currently selected ship on the board
+     * only allows valid placement
+     * prints a message if the placement is not valid
+     * if the player has placed five ships switches active player and notifies the player to trade the screen with them
+     * if the 2nd player has placed all of their ships, switches scenes to the attack-controller
+     * @param event mouse click
+     */
     @FXML
     protected void boardCellClicked(MouseEvent event) {
         if (currentShip != null) {
@@ -150,10 +176,21 @@ public class PlacementController {
                 shipSelectBlocker.setVisible(false);
                 currentShip = null;
                 redrawBoard();
+                if (game.currentPlayer.getFleet().getSize() == 5) {
+                    try {
+                        change();
+                    } catch (IOException ioe) {
+                        ioe.printStackTrace();
+                    }
+                }
             }
         }
     }
 
+    /**
+     * refreshes the board
+     * changes the color of squares with a ship on them to be green
+     */
     protected void redrawBoard() {
         for (javafx.scene.Node node : gameBoardDisplay.getChildren()) {
             Integer columnIndex = GridPane.getColumnIndex(node);
@@ -164,22 +201,50 @@ public class PlacementController {
 
             if (game.currentPlayer.board.getCell(new Coordinate(rowIdx, colIndex)).hasShip()) {
                 ((Rectangle) node).setFill(Color.GREEN);
+
             }
+            else ((Rectangle) node).setFill(Color.DODGERBLUE);
         }
     }
 
-    public static <T> T changeScene(String viewName, String title, boolean maximized) throws IOException {
-        return HelloController.getT(viewName, title, maximized);
+    /**
+     * redraws the board
+     * resets the ships visibility
+     * turns off the intermission screen
+     */
+    @FXML
+    protected void resumeButtonClick() {
+        redrawBoard();
+        changeName();
+        carrier.setVisible(true);
+        battleship.setVisible(true);
+        cruiser.setVisible(true);
+        submarine.setVisible(true);
+        destroyer.setVisible(true);
+        intermissionScreen.setVisible(false);
     }
 
-    //TODO remove later
     @FXML
     private void change() throws IOException {
-        getT("battleshipViews/attack-view.fxml", "Battleship");
+        if (game.isPlayer2()) {
+            try {
+                game.switchActivePlayer();
+                getT();
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
+        }
+        else {
+            passText.setText("Pass computer to: " + game.enemy.getName());
+            double width = passText.prefWidth(-1);
+            passText.setLayoutX((double) 1695 / 2 - width / 2);
+            game.switchActivePlayer();
+            intermissionScreen.setVisible(true);
+        }
     }
 
-    public <T> T getT(String viewName, String title) throws IOException {
-        FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("/csc180/shaw/jaxon/gameshub/" + viewName));
+    protected  <T> T getT() throws IOException {
+        FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("/csc180/shaw/jaxon/gameshub/" + "battleshipViews/attack-view.fxml"));
         Parent root = loader.load();
 
         AttackController controller = loader.getController();
@@ -189,7 +254,7 @@ public class PlacementController {
         Scene scene = new Scene(root);
         stage.setMaximized(true);
         stage.setScene(scene);
-        stage.setTitle(title);
+        stage.setTitle("Battleship");
         stage.show();
 
         return loader.getController();

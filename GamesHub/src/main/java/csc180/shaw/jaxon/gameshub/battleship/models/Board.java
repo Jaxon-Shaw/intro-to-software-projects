@@ -49,8 +49,12 @@ public class Board {
         ship.setCoordinates(coordinates);
     }
 
-    public boolean attack() {
-        return true;
+    public boolean attack(Coordinate coord) {
+        if (cells[coord.x][coord.y].isHit()) {
+            return true;
+        }
+        cells[coord.x][coord.y].setHit(true);
+        return cells[coord.x][coord.y].hasShip();
     }
 
     public Cell getCell(Coordinate coordinate) {

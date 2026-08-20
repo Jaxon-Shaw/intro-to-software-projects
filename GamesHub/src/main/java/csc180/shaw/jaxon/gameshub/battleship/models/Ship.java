@@ -1,6 +1,5 @@
 package csc180.shaw.jaxon.gameshub.battleship.models;
 
-import java.util.Arrays;
 
 public class Ship {
     public final ShipType type;
@@ -13,7 +12,7 @@ public class Ship {
         this.type = type;
         this.facing = facing;
         setSize();
-        setHealth();
+        setHealth(getSize());
     }
 
     public int getSize() {
@@ -31,8 +30,8 @@ public class Ship {
     public int getHealth() {
         return health;
     }
-    public void setHealth() {
-        this.health = getSize();
+    public void setHealth(int health) {
+        this.health = health;
     }
 
     public Coordinate[] getCoordinates() {
@@ -40,5 +39,19 @@ public class Ship {
     }
     public void setCoordinates(Coordinate[] coordinates) {
         this.coordinates = coordinates;
+    }
+
+    public boolean hasCoordinate(Coordinate check) {
+        for (Coordinate coordinate : coordinates) {
+            if (coordinate.x == check.x && coordinate.y == check.y) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return type.name().toLowerCase();
     }
 }

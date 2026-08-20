@@ -15,16 +15,14 @@ public class BlockFillController {
     private Random rand = new Random();
     private int rowNum;
     private int colNum;
+    private int boardNum;
 
     public int getRowNum() { return rowNum; }
     private void setRowNum(int rowNumber) { this.rowNum = rowNumber; }
     public int getColNum() { return colNum; }
     private void setColNum(int colNumber) { this.colNum = colNumber; }
-
-    @FXML
-    public void initialize() {
-
-    }
+    public int getBoardNum() { return boardNum; }
+    public void setBoardNum(int boardNum) { this.boardNum = boardNum; }
 
     @FXML
     protected void onExitButtonClick() {
@@ -36,33 +34,37 @@ public class BlockFillController {
     }
 
     @FXML
-    protected void onEasyButtonClick() {
+    protected int onEasyButtonClick() {
         try {
             switch(rand.nextInt(1)) {
                 case 0:
                     setRowNum(6);
                     setColNum(6);
+                    setBoardNum(0);
                     changeScene("blockFillViews/block-fill-game-board-easy0.fxml", "Block Fill", true);
                     break;
             }
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
+        return getBoardNum();
     }
 
     @FXML
-    protected void onHardButtonClick() {
+    protected int onHardButtonClick() {
         try {
             switch(rand.nextInt(1)) {
                 case 0 :
                     setRowNum(8);
                     setColNum(7);
+                    setBoardNum(10);
                     changeScene("blockFillViews/block-fill-game-board-hard0.fxml", "Block Fill", true);
                     break;
             }
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
+        return getBoardNum();
     }
 
     public <T> T changeScene(String viewName, String title, boolean maximized) throws IOException {
@@ -78,6 +80,7 @@ public class BlockFillController {
         if (controller instanceof BlockFillBoardController bfbc){
             bfbc.setRowNumber(getRowNum());
             bfbc.setColNumber(getColNum());
+            bfbc.setBoardNum(getBoardNum());
         }
 
 

@@ -145,7 +145,7 @@
             </Label>
          </children>
       </AnchorPane>
-        <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onExitButtonClick" text="Exit to Main Menu" />
+        <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onMousePressed="#onExitButtonClick" text="Exit to Main Menu" />
         <Label fx:id="eBoard" layoutX="1075.0" layoutY="82.0" text="Fog Of War">
             <font>
                 <Font size="20.0" />
@@ -268,7 +268,7 @@
                   <Font size="25.0" />
                </font>
             </Label>
-            <Button layoutX="739.0" layoutY="511.0" mnemonicParsing="false" onMousePressed="#resumeButtonClick" prefHeight="39.0" prefWidth="231.0" text="Press button when ready">
+            <Button layoutX="739.0" layoutY="511.0" mnemonicParsing="false" onAction="#resumeButtonClick" prefHeight="39.0" prefWidth="231.0" text="Press button when ready">
                <font>
                   <Font size="18.0" />
                </font></Button>

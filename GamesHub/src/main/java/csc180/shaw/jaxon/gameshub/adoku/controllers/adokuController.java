@@ -24,7 +24,6 @@ import static csc180.shaw.jaxon.gameshub.HelloController.getT;
 
 public class adokuController {
 
-    public NumberPalette numberPalette;
 
     @FXML
     private ImageView adoImage;
@@ -68,6 +67,7 @@ public class adokuController {
         board = BoardGenerator.generate(new StandardBoard(), difficulty);
         JavaFXDisplay.render(board);
         JavaFXDisplay.setOnCellEdit(this::handleCellEdit);
+        refreshPaletteAvailability();
 
     }
 
@@ -163,8 +163,29 @@ public class adokuController {
         }
     }
 
+    @FXML
+    private NumberPalette numberPalette;
+
     public <T> T changeScene(String viewName, String title, boolean maximized, boolean centered) throws IOException {
         return getT(viewName, title, maximized, centered);
+    }
+
+    private void refreshPaletteAvailability() {
+        int size = board.getSize();
+        int[] counts = new int[size + 1];
+
+        for (int row = 0; row < size; row++) {
+            for (int col = 0; col < size; col++) {
+                int value = board.getCell(row, col).getValue();
+                if (value != 0) {
+                    counts[value]++;
+                }
+            }
+        }
+
+        for (int digit = 1; digit <= size; digit++) {
+            numberPalette.setDigitAvailable(digit, counts[digit] < size);
+        }
     }
 
 
@@ -173,6 +194,7 @@ public class adokuController {
             board.setValue(edit.row(), edit.col(), edit.value());
             board.getCell(edit.row(), edit.col()).setFixed(true);
             statusLabel.setText("Correct!");
+            refreshPaletteAvailability();
 
             if (board.isComplete()) {
                 statusLabel.setText("Solved! Nice work.");

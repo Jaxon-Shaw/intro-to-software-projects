@@ -112,7 +112,7 @@ public class JavaFXDisplay extends GridPane {
         }
     }
 
-    /** Thicker borders on the outer edge and every boxSize-th line to mark 3x3 boxes. */
+    /* Thicker borders for the 3x3 boxes. */
     private Border borderFor(int row, int col) {
         double thick = 2.5;
         double thin = 0.5;
@@ -133,7 +133,6 @@ public class JavaFXDisplay extends GridPane {
         ));
     }
 
-    /** Redraws every cell from the current board state. */
     public void render(GameBoard board) {
         updatingFromModel = true;
         try {
@@ -158,7 +157,7 @@ public class JavaFXDisplay extends GridPane {
         }
     }
 
-        public void flagInvalid(int row, int col) {
+    public void flagInvalid(int row, int col) {
         fields[row][col].setStyle("-fx-text-fill: #c62828; -fx-background-color: #ffcdd2;");
     }
 

@@ -22,7 +22,7 @@
             <Button fx:id="difficultyButton" layoutX="43.0" layoutY="88.0" mnemonicParsing="false" onAction="#backToDifficultyClick" text="Exit to Difficulty" />
             <ImageView fx:id="adoImage" fitHeight="700.0" fitWidth="500.0" layoutX="1131.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true" />
             <Button layoutX="1298.0" layoutY="820.0" mnemonicParsing="false" onAction="#changeAdoImage" text="Press buttton for motivation" />
-            <NumberPalette fx:id="numberPalette" layoutX="244.0" layoutY="796.0" prefHeight="90.0" prefWidth="875.0" />
+            <NumberPalette fx:id="numberPalette" layoutX="244.0" layoutY="796.0" prefHeight="150.0" prefWidth="875.0" />
         </children>
     </AnchorPane>
 

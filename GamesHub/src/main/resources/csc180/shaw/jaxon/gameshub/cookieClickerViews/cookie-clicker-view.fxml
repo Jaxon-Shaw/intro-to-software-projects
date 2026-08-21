@@ -7,9 +7,9 @@
 <?import javafx.scene.text.*?>
 
 <AnchorPane prefHeight="990.0" prefWidth="1710.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="csc180.shaw.jaxon.gameshub.cookieCliker.CookieClikerController">
-   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="999.0" layoutX="-1.0" stroke="DODGERBLUE" strokeType="INSIDE" strokeWidth="100.0" width="756.0" />
-   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#624939" height="999.0" layoutX="737.0" stroke="#624939" strokeType="INSIDE" strokeWidth="10.0" width="976.0" />
-   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ba8b74" height="1045.0" layoutX="709.0" layoutY="-46.0" stroke="TRANSPARENT" strokeType="INSIDE" width="58.0" />
+   <Rectangle fx:id="factoryBox" arcHeight="5.0" arcWidth="5.0" fill="#624939" height="1004.0" layoutX="737.0" stroke="#624939" strokeType="INSIDE" strokeWidth="9.99999999E8" width="976.0" />
+   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="1004.0" layoutX="-1.0" stroke="DODGERBLUE" strokeType="INSIDE" strokeWidth="100.0" width="756.0" />
+   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ba8b74" height="1050.0" layoutX="709.0" layoutY="-46.0" stroke="TRANSPARENT" strokeType="INSIDE" width="58.0" />
     <Button fx:id="exitButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onExitButtonClick" prefHeight="45.0" prefWidth="131.0" text="Exit to Main Menu" />
    <Circle fx:id="cookieClick" accessibleRole="BUTTON" layoutX="362.0" layoutY="371.0" onMouseClicked="#clicking" radius="209.0" stroke="#776950" strokeLineCap="ROUND" strokeType="INSIDE">
       <fill>
@@ -28,30 +28,30 @@
             </stops>
          </LinearGradient>
       </fill></Circle>
-   <Text fx:id="cookieCount" layoutX="153.0" layoutY="128.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cookies: 0" textAlignment="CENTER" wrappingWidth="418.0">
+   <Text fx:id="cookieCount" layoutX="153.0" layoutY="119.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cookies: 0" textAlignment="CENTER" wrappingWidth="418.0">
       <font>
          <Font size="24.0" />
       </font>
    </Text>
-   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#797b7d" height="89.0" layoutX="792.0" layoutY="59.0" onMouseClicked="#upgradeCursor" stroke="BLACK" strokeType="INSIDE" width="200.0" />
-   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ba8b74" height="1045.0" layoutX="1257.0" layoutY="-46.0" stroke="TRANSPARENT" strokeType="INSIDE" width="14.0" />
-   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#797b7d" height="89.0" layoutX="793.0" layoutY="237.0" onMouseClicked="#upgradeCookie" stroke="BLACK" strokeType="INSIDE" width="200.0" />
-   <Text layoutX="1018.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Click Power Upgrade" textAlignment="CENTER">
+   <Rectangle fx:id="clickPowerBox" arcHeight="5.0" arcWidth="5.0" fill="#797b7d" height="89.0" layoutX="825.0" layoutY="14.0" onMouseClicked="#upgradeCursor" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ba8b74" height="1050.0" layoutX="1077.0" layoutY="-47.0" stroke="TRANSPARENT" strokeType="INSIDE" width="14.0" />
+   <Rectangle fx:id="globalBox" arcHeight="5.0" arcWidth="5.0" fill="#797b7d" height="89.0" layoutX="824.0" layoutY="723.0" onMouseClicked="#upgradeCookie" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+   <Text layoutX="815.0" layoutY="130.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Click Power Upgrade" textAlignment="CENTER">
       <font>
          <Font size="24.0" />
       </font>
    </Text>
-   <Text fx:id="cursorUpgradePrice" layoutX="1045.0" layoutY="129.0" strokeType="OUTSIDE" strokeWidth="0.0" text="15 Cookies" textAlignment="CENTER" wrappingWidth="167.91796875000023">
+   <Text fx:id="cursorUpgradePrice" layoutX="842.0" layoutY="164.0" strokeType="OUTSIDE" strokeWidth="0.0" text="15 Cookies" textAlignment="CENTER" wrappingWidth="167.91796875000023">
       <font>
          <Font size="24.0" />
       </font>
    </Text>
-   <Text layoutX="1005.0" layoutY="272.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Global Cookie Upgrade" textAlignment="CENTER">
+   <Text layoutX="802.0" layoutY="838.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Global Cookie Upgrade" textAlignment="CENTER">
       <font>
          <Font size="24.0" />
       </font>
    </Text>
-   <Text fx:id="cookieUpgradePrice" layoutX="1045.0" layoutY="307.0" strokeType="OUTSIDE" strokeWidth="0.0" text="100 Cookies" textAlignment="CENTER" wrappingWidth="167.91796875000023">
+   <Text fx:id="cookieUpgradePrice" layoutX="842.0" layoutY="873.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10000 Cookies" textAlignment="CENTER" wrappingWidth="167.91796875000023">
       <font>
          <Font size="24.0" />
       </font>
@@ -66,24 +66,24 @@
          <Font size="24.0" />
       </font>
    </Text>
-   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#797b7d" height="89.0" layoutX="794.0" layoutY="416.0" onMouseClicked="#upgradeCrit" stroke="BLACK" strokeType="INSIDE" width="200.0" />
-   <Text layoutX="1015.0" layoutY="451.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Crit Chance Upgrade" textAlignment="CENTER">
+   <Rectangle fx:id="critChanceBox" arcHeight="5.0" arcWidth="5.0" fill="#797b7d" height="89.0" layoutX="824.0" layoutY="230.0" onMouseClicked="#upgradeCrit" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+   <Text layoutX="815.0" layoutY="345.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Crit Chance Upgrade" textAlignment="CENTER">
       <font>
          <Font size="24.0" />
       </font>
    </Text>
-   <Text fx:id="critChancePrice" layoutX="1042.0" layoutY="486.0" strokeType="OUTSIDE" strokeWidth="0.0" text="200 Cookies" textAlignment="CENTER" wrappingWidth="167.91796875000023">
+   <Text fx:id="critChancePrice" layoutX="842.0" layoutY="380.0" strokeType="OUTSIDE" strokeWidth="0.0" text="200 Cookies" textAlignment="CENTER" wrappingWidth="167.91796875000023">
       <font>
          <Font size="24.0" />
       </font>
    </Text>
-   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#797b7d" height="89.0" layoutX="795.0" layoutY="594.0" onMouseClicked="#upgradeMultiplier" stroke="BLACK" strokeType="INSIDE" width="200.0" />
-   <Text layoutX="1003.0" layoutY="630.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Crit Multiplier Upgrade" textAlignment="CENTER">
+   <Rectangle fx:id="critMultiplierBox" arcHeight="5.0" arcWidth="5.0" fill="#797b7d" height="89.0" layoutX="825.0" layoutY="475.0" onMouseClicked="#upgradeMultiplier" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+   <Text layoutX="802.0" layoutY="590.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Crit Multiplier Upgrade" textAlignment="CENTER">
       <font>
          <Font size="24.0" />
       </font>
    </Text>
-   <Text fx:id="critMultiplierPrice" layoutX="1043.0" layoutY="665.0" strokeType="OUTSIDE" strokeWidth="0.0" text="400 Cookies" textAlignment="CENTER" wrappingWidth="167.91796875000023">
+   <Text fx:id="critMultiplierPrice" layoutX="840.0" layoutY="622.0" strokeType="OUTSIDE" strokeWidth="0.0" text="400 Cookies" textAlignment="CENTER" wrappingWidth="167.91796875000023">
       <font>
          <Font size="24.0" />
       </font>
@@ -94,6 +94,95 @@
       </font>
    </Text>
    <Text fx:id="multiplierText" layoutX="153.0" layoutY="756.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Crit Mulitplier: 2.0x" textAlignment="CENTER" wrappingWidth="418.0">
+      <font>
+         <Font size="24.0" />
+      </font>
+   </Text>
+   <Rectangle fx:id="extraClickerBox" arcHeight="5.0" arcWidth="5.0" fill="#797b7d" height="89.0" layoutX="1125.0" layoutY="14.0" onMouseClicked="#testPassive" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+   <Text fx:id="clickPerSecondText" layoutX="169.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="per second: 0" textAlignment="CENTER" wrappingWidth="385.9179687500002" />
+   <Text layoutX="1161.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Extra Clicker" textAlignment="CENTER">
+      <font>
+         <Font size="24.0" />
+      </font>
+   </Text>
+   <Text fx:id="extraClickerUpgradePrice" layoutX="1141.0" layoutY="163.0" strokeType="OUTSIDE" strokeWidth="0.0" text="50 Cookies" textAlignment="CENTER" wrappingWidth="167.91796875000023">
+      <font>
+         <Font size="24.0" />
+      </font>
+   </Text>
+   <Rectangle fx:id="davidBox" arcHeight="5.0" arcWidth="5.0" fill="#797b7d" height="89.0" layoutX="1448.0" layoutY="15.0" onMouseClicked="#grandmaUpgrade" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+   <Rectangle fx:id="mineBox" arcHeight="5.0" arcWidth="5.0" fill="#797b7d" height="89.0" layoutX="1448.0" layoutY="230.0" onMouseClicked="#mineUpgrade" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+   <Rectangle fx:id="farmBox" arcHeight="5.0" arcWidth="5.0" fill="#797b7d" height="89.0" layoutX="1125.0" layoutY="230.0" onMouseClicked="#farmUpgrade" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+   <Rectangle fx:id="bankBox" arcHeight="5.0" arcWidth="5.0" fill="#797b7d" height="89.0" layoutX="1448.0" layoutY="478.0" onMouseClicked="#bankUpgrade" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+   <Rectangle fx:id="factoryBox" arcHeight="5.0" arcWidth="5.0" fill="#797b7d" height="89.0" layoutX="1125.0" layoutY="478.0" onMouseClicked="#factoryUpgrade" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+   <Rectangle fx:id="wizardTowerBox" arcHeight="5.0" arcWidth="5.0" fill="#797b7d" height="89.0" layoutX="1448.0" layoutY="723.0" onMouseClicked="#wizardTowerUpgrade" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+   <Rectangle fx:id="templeBox" arcHeight="5.0" arcWidth="5.0" fill="#797b7d" height="89.0" layoutX="1125.0" layoutY="723.0" onMouseClicked="#templeUpgrade" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+   <Text layoutX="1448.0" layoutY="129.0" strokeType="OUTSIDE" strokeWidth="0.0" text="David" textAlignment="CENTER" wrappingWidth="200.0">
+      <font>
+         <Font size="24.0" />
+      </font>
+   </Text>
+   <Text layoutX="1071.0" layoutY="344.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ken's Matcha Cookie Farm" textAlignment="CENTER" wrappingWidth="307.0">
+      <font>
+         <Font size="21.0" />
+      </font>
+   </Text>
+   <Text layoutX="1448.0" layoutY="344.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Crafting Table" textAlignment="CENTER" wrappingWidth="200.0">
+      <font>
+         <Font size="24.0" />
+      </font>
+   </Text>
+   <Text layoutX="1448.0" layoutY="592.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gluttony" textAlignment="CENTER" wrappingWidth="200.0">
+      <font>
+         <Font size="24.0" />
+      </font>
+   </Text>
+   <Text layoutX="1125.0" layoutY="592.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Star Forge" textAlignment="CENTER" wrappingWidth="200.0">
+      <font>
+         <Font size="24.0" />
+      </font>
+   </Text>
+   <Text layoutX="1125.0" layoutY="837.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ado Temple" textAlignment="CENTER" wrappingWidth="200.0">
+      <font>
+         <Font size="24.0" />
+      </font>
+   </Text>
+   <Text layoutX="1448.0" layoutY="837.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lich's Lair" textAlignment="CENTER" wrappingWidth="200.0">
+      <font>
+         <Font size="24.0" />
+      </font>
+   </Text>
+   <Text fx:id="grandmaUpgradePrice" layoutX="1448.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0" text="100 Cookies" textAlignment="CENTER" wrappingWidth="200.0">
+      <font>
+         <Font size="24.0" />
+      </font>
+   </Text>
+   <Text fx:id="farmUpgradePrice" layoutX="1117.0" layoutY="379.0" strokeType="OUTSIDE" strokeWidth="0.0" text="500 Cookies" textAlignment="CENTER" wrappingWidth="200.0">
+      <font>
+         <Font size="24.0" />
+      </font>
+   </Text>
+   <Text fx:id="mineUpgradePrice" layoutX="1448.0" layoutY="379.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2500 Cookies" textAlignment="CENTER" wrappingWidth="200.0">
+      <font>
+         <Font size="24.0" />
+      </font>
+   </Text>
+   <Text fx:id="factoryUpgradePrice" layoutX="1125.0" layoutY="628.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10000 Cookies" textAlignment="CENTER" wrappingWidth="200.0">
+      <font>
+         <Font size="24.0" />
+      </font>
+   </Text>
+   <Text fx:id="bankUpgradePrice" layoutX="1448.0" layoutY="628.0" strokeType="OUTSIDE" strokeWidth="0.0" text="50000 Cookies" textAlignment="CENTER" wrappingWidth="200.0">
+      <font>
+         <Font size="24.0" />
+      </font>
+   </Text>
+   <Text fx:id="templeUpgradePrice" layoutX="1125.0" layoutY="870.0" strokeType="OUTSIDE" strokeWidth="0.0" text="250000 Cookies" textAlignment="CENTER" wrappingWidth="200.0">
+      <font>
+         <Font size="24.0" />
+      </font>
+   </Text>
+   <Text fx:id="wizardTowerUpgradePrice" layoutX="1448.0" layoutY="870.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1000000 Cookies" textAlignment="CENTER" wrappingWidth="200.0">
       <font>
          <Font size="24.0" />
       </font>

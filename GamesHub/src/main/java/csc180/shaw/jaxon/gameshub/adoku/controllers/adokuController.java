@@ -6,23 +6,27 @@ import csc180.shaw.jaxon.gameshub.adoku.models.BoardGenerator;
 import csc180.shaw.jaxon.gameshub.adoku.models.interfaces.GameBoard;
 import csc180.shaw.jaxon.gameshub.adoku.models.boards.StandardBoard;
 
+import csc180.shaw.jaxon.gameshub.adoku.views.NumberPalette;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Random;
 
 import static csc180.shaw.jaxon.gameshub.HelloController.getT;
 
 public class adokuController {
 
+
     @FXML
     private ImageView adoImage;
-
 
     private final Image Ado1 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/csc180/shaw/jaxon/gameshub/sudokuViews/adoimages/ado1.png")));
     private final Image Ado2 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/csc180/shaw/jaxon/gameshub/sudokuViews/adoimages/ado2.png")));
@@ -48,13 +52,28 @@ public class adokuController {
     @FXML
     private JavaFXDisplay JavaFXDisplay;
 
+    @FXML
+    private Label statusLabel;
+
+    ButtonType buttonReplay = new ButtonType("Play Again?");
+    ButtonType buttonQuit = new ButtonType("Back to GamesHub");
+
     private GameBoard board;
 
-    @FXML
-    public void initialize() {
-        board = BoardGenerator.generate(new StandardBoard(), 40); // 40 blanks ~ medium
-        JavaFXDisplay.render(board);
+    int incorrectMoves = 10;
 
+    @FXML
+    public void initialize(int difficulty) {
+        board = BoardGenerator.generate(new StandardBoard(), difficulty);
+        JavaFXDisplay.render(board);
+        JavaFXDisplay.setOnCellEdit(this::handleCellEdit);
+        refreshPaletteAvailability();
+
+    }
+
+
+     public void setBoard(int difficulty) {
+         board = BoardGenerator.generate(new StandardBoard(), difficulty);
     }
 
     @FXML
@@ -129,14 +148,103 @@ public class adokuController {
     @FXML
     protected void onExitButtonClick() {
         try {
-            changeScene("menu-view.fxml", "Main Menu", false);
+            changeScene("menu-view.fxml", "Main Menu", false, true);
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
     }
 
-    public <T> T changeScene(String viewName, String title, boolean maximized) throws IOException {
-        return getT(viewName, title, maximized);
+    @FXML
+    protected void backToDifficultyClick() {
+        try {
+            changeScene("sudokuViews/AdokuDifficulty.fxml", "Adoku Difficulty", false, true);
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+    }
+
+    @FXML
+    private NumberPalette numberPalette;
+
+    public <T> T changeScene(String viewName, String title, boolean maximized, boolean centered) throws IOException {
+        return getT(viewName, title, maximized, centered);
+    }
+
+    private void refreshPaletteAvailability() {
+        int size = board.getSize();
+        int[] counts = new int[size + 1];
+
+        for (int row = 0; row < size; row++) {
+            for (int col = 0; col < size; col++) {
+                int value = board.getCell(row, col).getValue();
+                if (value != 0) {
+                    counts[value]++;
+                }
+            }
+        }
+
+        for (int digit = 1; digit <= size; digit++) {
+            numberPalette.setDigitAvailable(digit, counts[digit] < size);
+        }
+    }
+
+
+    private void handleCellEdit(JavaFXDisplay.CellEdit edit) {
+        if (BoardChecker.isValidMove(board, edit.row(), edit.col(), edit.value())) {
+            board.setValue(edit.row(), edit.col(), edit.value());
+            board.getCell(edit.row(), edit.col()).setFixed(true);
+            statusLabel.setText("Correct!");
+            refreshPaletteAvailability();
+
+            if (board.isComplete()) {
+                statusLabel.setText("Solved! Nice work.");
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Congratulations! You solved Adoku!");
+                alert.getButtonTypes().setAll(buttonReplay, buttonQuit);
+
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == buttonReplay) {
+                    try {
+                        changeScene("sudokuViews/AdokuDifficulty.fxml", "Adoku Difficulty", false, true);
+                    } catch (IOException ioe) {
+                        ioe.printStackTrace();
+                    }
+                }
+                else {
+                    try {
+                        changeScene("menu-view.fxml", "Main Menu", false, true);
+                    } catch (IOException ioe) {
+                        ioe.printStackTrace();
+                    }
+                }
+            }
+        } else {
+            incorrectMoves--;
+            statusLabel.setText("Not quite - try again. " +  (incorrectMoves) + " chances remaining");
+            if (incorrectMoves == 0){
+                statusLabel.setText("You put in too many moves.");
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "You wrong moves, game tis over");
+                alert.setTitle("Game Over");
+                alert.setHeaderText("");
+                alert.getButtonTypes().setAll(buttonReplay, buttonQuit);
+
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == buttonReplay) {
+                    try {
+                        changeScene("sudokuViews/AdokuDifficulty.fxml", "Adoku Difficulty", false, true);
+                    } catch (IOException ioe) {
+                        ioe.printStackTrace();
+                    }
+                }
+                else {
+                    try {
+                        changeScene("menu-view.fxml", "Main Menu", false, true);
+                    } catch (IOException ioe) {
+                        ioe.printStackTrace();
+                    }
+                }
+            }
+        }
+        JavaFXDisplay.render(board);
     }
 
 }

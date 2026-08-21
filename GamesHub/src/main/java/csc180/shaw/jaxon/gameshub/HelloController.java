@@ -15,7 +15,7 @@ public class HelloController {
     @FXML
     protected void sodokuGameLauncher() {
         try {
-            changeScene("sudokuViews/adoku-view-v2.fxml", "Adoku", true);
+            changeScene("sudokuViews/AdokuDifficulty.fxml", "Adoku Difficulty", false, true);
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
@@ -24,7 +24,7 @@ public class HelloController {
     @FXML
     protected void battleshipGameLauncher() {
         try {
-            changeScene("battleshipViews/game-start-view.fxml", "Battleship", false);
+            changeScene("battleshipViews/placement-view.fxml", "Battleship", true, false);
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
@@ -33,7 +33,7 @@ public class HelloController {
     @FXML
     protected void cookieClickerGameLauncher() {
         try {
-            changeScene("cookieClickerViews/cookie-clicker-view.fxml", "Cookie Clicker", true);
+            changeScene("cookieClickerViews/cookie-clicker-view.fxml", "Cookie Clicker", true, false);
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
@@ -42,7 +42,7 @@ public class HelloController {
     @FXML
     protected void blockFillGameLauncher() {
         try {
-            changeScene("blockFillViews/block-fill-view.fxml", "Block Fill", false);
+            changeScene("blockFillViews/block-fill-view.fxml", "Block Fill", false, true);
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
@@ -54,11 +54,11 @@ public class HelloController {
         stage.close();
     }
 
-    public <T> T changeScene(String viewName, String title, boolean maximized) throws IOException {
-        return getT(viewName, title, maximized);
+    public <T> T changeScene(String viewName, String title, boolean maximized, boolean centered) throws IOException {
+        return getT(viewName, title, maximized, centered);
     }
 
-    public static <T> T getT(String viewName, String title, boolean maximized) throws IOException {
+    public static <T> T getT(String viewName, String title, boolean maximized, boolean centered) throws IOException {
         FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("/csc180/shaw/jaxon/gameshub/" + viewName));
         Parent root = loader.load();
 
@@ -67,6 +67,9 @@ public class HelloController {
         stage.setMaximized(maximized);
         stage.setScene(scene);
         stage.setTitle(title);
+        if (centered) {
+            stage.centerOnScreen();
+        }
         stage.show();
 
         return loader.getController();

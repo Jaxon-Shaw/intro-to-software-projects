@@ -5,6 +5,7 @@ import csc180.shaw.jaxon.gameshub.adoku.models.interfaces.GameBoard;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.TextField;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
@@ -23,6 +24,9 @@ public class JavaFXDisplay extends GridPane {
     private final int size;
     private final int boxSize;
     private final TextField[][] fields;
+
+    private boolean updatingFromModel = false;
+
 
     private Consumer<CellEdit> onCellEdit;
 
@@ -54,10 +58,30 @@ public class JavaFXDisplay extends GridPane {
                 field.setFont(Font.font("Monospaced", FontWeight.BOLD, 40));
                 field.setBorder(borderFor(row, col));
 
+                field.setOnDragOver(event -> {
+                    if (field.isEditable() && event.getDragboard().hasContent(NumberPalette.SUDOKU_DIGIT)) {
+                        event.acceptTransferModes(TransferMode.COPY);
+                    }
+                    event.consume();
+                });
+
+                field.setOnDragDropped(event -> {
+                    var dragboard = event.getDragboard();
+                    boolean success = false;
+                    if (dragboard.hasContent(NumberPalette.SUDOKU_DIGIT)) {
+                        int value = (int) dragboard.getContent(NumberPalette.SUDOKU_DIGIT);
+                        field.setText(String.valueOf(value)); // reuses the existing textProperty listener pipeline
+                        success = true;
+                    }
+                    event.setDropCompleted(success);
+                    event.consume();
+                });
+
                 final int r = row;
                 final int c = col;
 
                 field.textProperty().addListener((obs, oldVal, newVal) -> {
+                    if (updatingFromModel) return;
                     if (newVal.equals(oldVal)) return;
 
                     String filtered = newVal.replaceAll("[^0-9]", "");
@@ -88,7 +112,7 @@ public class JavaFXDisplay extends GridPane {
         }
     }
 
-    /** Thicker borders on the outer edge and every boxSize-th line to mark 3x3 boxes. */
+    /* Thicker borders for the 3x3 boxes. */
     private Border borderFor(int row, int col) {
         double thick = 2.5;
         double thin = 0.5;
@@ -109,24 +133,36 @@ public class JavaFXDisplay extends GridPane {
         ));
     }
 
-    /** Redraws every cell from the current board state. */
     public void render(GameBoard board) {
-        for (int row = 0; row < size; row++) {
-            for (int col = 0; col < size; col++) {
-                var cell = board.getCell(row, col);
-                TextField field = fields[row][col];
+        updatingFromModel = true;
+        try {
+            for (int row = 0; row < size; row++) {
+                for (int col = 0; col < size; col++) {
+                    var cell = board.getCell(row, col);
+                    TextField field = fields[row][col];
 
-                int value = cell.getValue();
-                field.setText(value == 0 ? "" : String.valueOf(value));
+                    int value = cell.getValue();
+                    field.setText(value == 0 ? "" : String.valueOf(value));
 
-                field.setEditable(!cell.isFixed());
-                if (cell.isFixed()) {
-                    field.setStyle("-fx-text-fill: #1a1a1a; -fx-background-color: #e0e0e0; -fx-opacity: 1;");
-                } else {
-                    field.setStyle("-fx-text-fill: #1565c0; -fx-background-color: white;");
+                    field.setEditable(!cell.isFixed());
+                    if (cell.isFixed()) {
+                        field.setStyle("-fx-text-fill: #1a1a1a; -fx-background-color: #e0e0e0; -fx-opacity: 1;");
+                    } else {
+                        field.setStyle("-fx-text-fill: #1565c0; -fx-background-color: white;");
+                    }
                 }
             }
+        } finally {
+            updatingFromModel = false;
         }
+    }
+
+    public void flagInvalid(int row, int col) {
+        fields[row][col].setStyle("-fx-text-fill: #c62828; -fx-background-color: #ffcdd2;");
+    }
+
+    public void setOnCellEdit(Consumer<CellEdit> handler) {
+        this.onCellEdit = handler;
     }
 
 

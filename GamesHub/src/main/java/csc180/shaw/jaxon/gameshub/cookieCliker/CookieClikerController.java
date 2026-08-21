@@ -39,14 +39,14 @@ public class CookieClikerController {
     @FXML
     protected void onExitButtonClick() {
         try {
-            changeScene("menu-view.fxml", "Main Menu", false);
+            changeScene("menu-view.fxml", "Main Menu", false, false);
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
     }
 
-    public <T> T changeScene(String viewName, String title, boolean maximized) throws IOException {
-        return getT(viewName, title, maximized);
+    public <T> T changeScene(String viewName, String title, boolean maximized, boolean centered) throws IOException {
+        return getT(viewName, title, maximized, centered);
     }
 
     @FXML

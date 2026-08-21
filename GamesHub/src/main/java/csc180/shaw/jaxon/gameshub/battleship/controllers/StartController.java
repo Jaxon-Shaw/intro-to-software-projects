@@ -54,7 +54,7 @@ public class StartController {
     }
 
     public static <T> T changeScene(String viewName, String title, boolean maximized) throws IOException {
-        return HelloController.getT(viewName, title, maximized);
+        return HelloController.getT(viewName, title, maximized, false);
     }
 
     public <T> void changeScene() throws IOException {

@@ -9,9 +9,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 
+import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class StartController {
@@ -25,6 +29,10 @@ public class StartController {
     private Label p1Err;
     @FXML
     private Label p2Err;
+    @FXML
+    private TextField aiName;
+    @FXML
+    private ToggleGroup pvpOrAI;
 
     @FXML
     protected void onExitButtonClick() {
@@ -40,12 +48,14 @@ public class StartController {
         boolean p1ValidName = p1Name.getText().matches(".{1,90}");
         boolean p2ValidName = p2Name.getText().matches(".{1,90}");
 
+        boolean p2IsAI = gameModeSelect();
+
         p1Err.setVisible(!p1ValidName);
         p2Err.setVisible(!p2ValidName);
 
         if (p1ValidName && p2ValidName) {
             try {
-                game.start(p1Name.getText(), p2Name.getText());
+                game.start(p1Name.getText(), p2Name.getText(), p2IsAI);
                 changeScene();
             } catch (IOException ioe) {
                 ioe.printStackTrace();
@@ -53,8 +63,18 @@ public class StartController {
         }
     }
 
+    protected boolean gameModeSelect() {
+        String toggle = pvpOrAI.getSelectedToggle().toString();
+
+        String regex = "^(.*)?(\\[id=)(.{3})(,.*)$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(toggle);
+        matcher.find();
+        return  matcher.group(3).equals("pvc");
+    }
+
     public static <T> T changeScene(String viewName, String title, boolean maximized) throws IOException {
-        return HelloController.getT(viewName, title, maximized, false);
+        return HelloController.getT(viewName, title, maximized, true);
     }
 
     public <T> void changeScene() throws IOException {
@@ -68,6 +88,7 @@ public class StartController {
         Scene scene = new Scene(root);
         stage.setMaximized(true);
         stage.setScene(scene);
+        stage.centerOnScreen();
         stage.setTitle("Battleship");
         stage.show();
 

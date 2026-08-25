@@ -8,6 +8,8 @@
 <AnchorPane prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="csc180.shaw.jaxon.gameshub.battleship.controllers.StartController">
 
     <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b3b3b3" height="500.0" layoutY="1.0" stroke="BLACK" strokeType="INSIDE" width="600.0" AnchorPane.bottomAnchor="0.0" />
+   <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onMousePressed="#onExitButtonClick" text="Exit to Main Menu" />
+
    <Button layoutX="175.0" layoutY="323.0" mnemonicParsing="false" onMouseReleased="#onSubmitClicked" prefHeight="25.0" prefWidth="232.0" text="Accept player names and start game!" />
    <Label layoutX="120.0" layoutY="133.0" text="Player 1">
       <font>
@@ -22,5 +24,10 @@
    <TextField fx:id="p2Name" layoutX="366.0" layoutY="190.0" promptText="Enter your name:" />
    <Label fx:id="p1Err" layoutX="89.0" layoutY="163.0" text="Name too long or empty" underline="true" visible="false" />
    <Label fx:id="p2Err" layoutX="375.0" layoutY="163.0" text="Name too long or empty" underline="true" visible="false" />
+   <RadioButton fx:id="pvc" layoutX="367.0" layoutY="69.0" mnemonicParsing="false" text="Singleplayer (player vs. AI)">
+      <toggleGroup>
+         <ToggleGroup fx:id="pvpOrAI" />
+      </toggleGroup></RadioButton>
+   <RadioButton fx:id="pvp" layoutX="81.0" layoutY="69.0" mnemonicParsing="false" selected="true" text="Multiplayer (player vs. player)" toggleGroup="$pvpOrAI" />
 
 </AnchorPane>

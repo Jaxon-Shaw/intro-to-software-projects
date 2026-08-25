@@ -176,9 +176,17 @@ public class PlacementController {
                 shipSelectBlocker.setVisible(false);
                 currentShip = null;
                 redrawBoard();
-                if (game.currentPlayer.getFleet().getSize() == 5) {
+                if (game.currentPlayer.getFleet().getSize() == 5 && !game.p2IsAI()) {
                     try {
                         change();
+                    } catch (IOException ioe) {
+                        ioe.printStackTrace();
+                    }
+                }
+                else if (game.currentPlayer.getFleet().getSize() == 5 && game.p2IsAI()) {
+                    game.aiPlaceShips();
+                    try {
+                        getT();
                     } catch (IOException ioe) {
                         ioe.printStackTrace();
                     }

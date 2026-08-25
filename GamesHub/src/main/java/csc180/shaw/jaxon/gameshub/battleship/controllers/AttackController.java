@@ -151,7 +151,12 @@ public class AttackController {
                 game.currentPlayer.setMissCount(game.currentPlayer.getMissCount() + 1);
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Miss");
                 alert.showAndWait();
-                game.switchActivePlayer();
+                if (!game.p2IsAI()) {
+                    game.switchActivePlayer();
+                }
+                else {
+                    game.aiTakeAttack();
+                }
                 try {
                     change();
                 } catch (IOException ioe) {
@@ -160,6 +165,14 @@ public class AttackController {
             }
             if (game.enemy.getFleet().allSunk()) {
                 game.setWinnerIsPlayer2(game.isPlayer2());
+                try {
+                    getT("battleshipViews/game-end-view.fxml");
+                } catch (IOException ioe) {
+                    ioe.printStackTrace();
+                }
+            }
+            else if (game.currentPlayer.getFleet().allSunk() && game.p2IsAI()) {
+                game.setWinnerIsPlayer2(true);
                 try {
                     getT("battleshipViews/game-end-view.fxml");
                 } catch (IOException ioe) {

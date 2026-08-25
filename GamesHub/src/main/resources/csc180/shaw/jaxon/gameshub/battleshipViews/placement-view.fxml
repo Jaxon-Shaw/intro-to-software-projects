@@ -12,7 +12,7 @@
 <AnchorPane onMouseEntered="#changeName" prefHeight="990.0" prefWidth="1695.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="csc180.shaw.jaxon.gameshub.battleship.controllers.PlacementController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b3b3b3" height="990.0" layoutX="7.0" onMouseEntered="#changeName" stroke="BLACK" strokeType="INSIDE" width="1695.0" AnchorPane.bottomAnchor="0.0" />
-      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Exit to Main Menu" />
+      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onMousePressed="#onExitButtonClick" text="Exit to Main Menu" />
       <AnchorPane layoutX="498.0" layoutY="125.0" prefHeight="726.0" prefWidth="727.0">
          <children>
             <Label layoutX="58.0" text="A" />
@@ -191,11 +191,6 @@
          </children>
       </AnchorPane>
       <Rectangle fx:id="shipSelectBlocker" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="126.0" layoutX="550.0" layoutY="860.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" visible="false" width="610.0" />
-      <Button fx:id="change" layoutX="33.0" layoutY="214.0" mnemonicParsing="false" onMousePressed="#change" text="TESTING ATTACK SCREEN REMOVE LATER">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Button>
        <AnchorPane fx:id="intermissionScreen" prefHeight="990.0" prefWidth="1710.0" visible="false">
            <children>
                <Rectangle arcHeight="5.0" arcWidth="5.0" height="990.0" stroke="BLACK" strokeType="INSIDE" width="1710.0" />

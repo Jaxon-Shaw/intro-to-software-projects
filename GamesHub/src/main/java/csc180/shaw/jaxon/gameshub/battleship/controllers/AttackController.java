@@ -68,7 +68,6 @@ public class AttackController {
     @FXML
     protected void onExitButtonClick() throws IOException {
         try {
-//            PlacementController.changeScene("menu-view.fxml", "Main Menu", false, false);
             changeScene("menu-view.fxml", "Main Menu", false);
         } catch (IOException ioe) {
             ioe.printStackTrace();

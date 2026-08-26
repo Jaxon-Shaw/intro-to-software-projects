@@ -28,6 +28,9 @@ public class adokuController {
     @FXML
     private ImageView adoImage;
 
+    @FXML
+    private ImageView AdoYouGotThis;
+
     private final Image Ado1 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/csc180/shaw/jaxon/gameshub/sudokuViews/adoimages/ado1.png")));
     private final Image Ado2 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/csc180/shaw/jaxon/gameshub/sudokuViews/adoimages/ado2.png")));
     private final Image Ado3 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/csc180/shaw/jaxon/gameshub/sudokuViews/adoimages/ado3.png")));
@@ -48,6 +51,17 @@ public class adokuController {
     private final Image Ado18 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/csc180/shaw/jaxon/gameshub/sudokuViews/adoimages/ado18.jpg")));
     private final Image Ado19 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/csc180/shaw/jaxon/gameshub/sudokuViews/adoimages/ado19.jpg")));
     private final Image Ado20 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/csc180/shaw/jaxon/gameshub/sudokuViews/adoimages/ado20.jpg")));
+    private final Image Ado21 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/csc180/shaw/jaxon/gameshub/sudokuViews/adoimages/ado21.jpg")));
+    private final Image Ado22 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/csc180/shaw/jaxon/gameshub/sudokuViews/adoimages/ado22.png")));
+    private final Image Ado23 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/csc180/shaw/jaxon/gameshub/sudokuViews/adoimages/ado23.jpg")));
+    private final Image Ado24 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/csc180/shaw/jaxon/gameshub/sudokuViews/adoimages/ado24.jpg")));
+    private final Image Ado25 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/csc180/shaw/jaxon/gameshub/sudokuViews/adoimages/ado25.jpg")));
+    private final Image Ado26 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/csc180/shaw/jaxon/gameshub/sudokuViews/adoimages/ado26.jpg")));
+
+
+    private final Image ClownAdo = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/csc180/shaw/jaxon/gameshub/sudokuViews/Clawdo.jpg")));
+
+
 
     @FXML
     private JavaFXDisplay JavaFXDisplay;
@@ -79,7 +93,7 @@ public class adokuController {
     @FXML
     protected void changeAdoImage(){
         Random rng = new Random();
-        int adokuNumber = rng.nextInt(20) + 1;
+        int adokuNumber = rng.nextInt(26) + 1;
         switch (adokuNumber) {
             case 1:
                 adoImage.setImage(Ado1);
@@ -140,6 +154,24 @@ public class adokuController {
                 break;
             case 20:
                 adoImage.setImage(Ado20);
+                break;
+            case 21:
+                adoImage.setImage(Ado21);
+                break;
+            case 22:
+                adoImage.setImage(Ado22);
+                break;
+            case 23:
+                adoImage.setImage(Ado23);
+                break;
+            case 24:
+                adoImage.setImage(Ado24);
+                break;
+            case 25:
+                adoImage.setImage(Ado25);
+                break;
+            case 26:
+                adoImage.setImage(Ado26);
                 break;
             default:
         }
@@ -221,10 +253,16 @@ public class adokuController {
             incorrectMoves--;
             statusLabel.setText("Not quite - try again. " +  (incorrectMoves) + " chances remaining");
             if (incorrectMoves == 0){
+                adoImage.setImage(ClownAdo);
+                AdoYouGotThis.setImage(ClownAdo);
                 statusLabel.setText("You put in too many moves.");
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "You wrong moves, game tis over");
                 alert.setTitle("Game Over");
                 alert.setHeaderText("");
+                ImageView loseScreen = new ImageView(ClownAdo);
+                alert.setGraphic(loseScreen);
+                alert.setX(300);
+                alert.setY(300);
                 alert.getButtonTypes().setAll(buttonReplay, buttonQuit);
 
                 Optional<ButtonType> result = alert.showAndWait();

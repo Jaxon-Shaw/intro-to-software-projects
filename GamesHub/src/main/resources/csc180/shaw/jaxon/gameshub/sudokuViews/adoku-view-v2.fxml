@@ -15,7 +15,7 @@
         <children>
             <JavaFXDisplay fx:id="JavaFXDisplay" layoutX="185.0" layoutY="78.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="718.0" prefWidth="900.0" />
             <Label fx:id="statusLabel" layoutX="517.0" layoutY="56.0" style="-fx-font-size: 14px; -fx-background-color: white;" text="Fill in the board. Fixed cells are locked." />
-            <ImageView fitHeight="190.0" fitWidth="192.0" layoutX="13.0" layoutY="134.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="AdoYouGotThis" fitHeight="190.0" fitWidth="192.0" layoutX="13.0" layoutY="134.0" pickOnBounds="true" preserveRatio="true">
                 <Image url="@Ado - Copy.jpeg" />
             </ImageView>
             <Button fx:id="exitButton" layoutX="43.0" layoutY="53.0" mnemonicParsing="false" onAction="#onExitButtonClick" text="Exit to Main Menu" />

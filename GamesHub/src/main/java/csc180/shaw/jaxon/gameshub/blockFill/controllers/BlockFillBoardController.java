@@ -6,22 +6,21 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import java.io.IOException;
-import java.util.Objects;
 import java.util.Random;
 
 import static csc180.shaw.jaxon.gameshub.HelloController.getT;
 
 public class BlockFillBoardController {
-    private Random rand = new Random();
+    private final Random rand = new Random();
     private Color color;
     private final Color fillColor = Color.rgb(83, 104, 120);
     private final Color backgroundColor = Color.rgb(54, 69, 79);
     private int rowNumber;
     private int colNumber;
     private int boardNum;
+    private Rectangle currentCell;
 
     public int getRowNumber() { return rowNumber; }
     public void setRowNumber(int rowNum) { this.rowNumber = rowNum; }
@@ -56,29 +55,26 @@ public class BlockFillBoardController {
                     cell.setStroke(backgroundColor);
                     cell.setId(row + " " + col);
 
-                    cell.setOnMousePressed(event -> {
-                        dragging = true;
-                        if (!(cell.getFill() == backgroundColor)) {
-                            updateDisablingForCellPlus(cell, gridPane);
-                            cell.setFill(color);
-                        }
-                    });
-
                     cell.setOnDragDetected(event -> {
-                        cell.startFullDrag();
+                        if (cell == currentCell) {
+                            dragging = true;
+                            cell.startFullDrag();
+                        }
                         event.consume();
                     });
 
                     cell.setOnMouseDragEntered(event -> {
-                        if (dragging && !(cell.getFill() == backgroundColor)) {
+                        if (dragging && cell.getFill() == fillColor && isAdjacentToColor(cell)) {
                             updateDisablingForCellPlus(cell, gridPane);
-//                            if (!(cell.getFill() == color)) {
-                                cell.setFill(color);
-//                            } else if (cell.getFill() == fillColor) {
-//                                cell.setFill(fillColor);
-//                            } else {
-//                                cell.setFill(backgroundColor);
-//                            }
+                            cell.setFill(color);
+                            currentCell = cell;
+                        }
+                        if (gameIsDone(gridBoardDisplay)) {
+                            try{
+                                changeScene("blockFillViews/block-fill-win-view.fxml", "Block Fill", true, true);
+                            } catch (IOException ioe) {
+                                ioe.printStackTrace();
+                            }
                         }
                     });
 
@@ -89,6 +85,34 @@ public class BlockFillBoardController {
                 }
             }
         }
+    }
+
+    private boolean gameIsDone(GridPane gridPane) {
+        for (Node node : gridPane.getChildren()) {
+            if (((Rectangle)node).getFill() == fillColor) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isAdjacentToColor(Node node) {
+        if (currentCell == null) return false;
+
+        Integer nodeColIdx = GridPane.getColumnIndex(node);
+        Integer nodeRowIdx = GridPane.getRowIndex(node);
+        Integer curColIdx = GridPane.getColumnIndex(currentCell);
+        Integer curRowIdx = GridPane.getRowIndex(currentCell);
+
+        int nodeCol = (nodeColIdx == null) ? 0 : nodeColIdx;
+        int nodeRow = (nodeRowIdx == null) ? 0 : nodeRowIdx;
+        int curCol = (curColIdx == null) ? 0 : curColIdx;
+        int curRow = (curRowIdx == null) ? 0 : curRowIdx;
+
+        int dx = Math.abs(nodeCol - curCol);
+        int dy = Math.abs(nodeRow - curRow);
+
+        return (dx == 1 && dy == 0) || (dx == 0 && dy == 1);
     }
 
     @FXML
@@ -118,9 +142,7 @@ public class BlockFillBoardController {
     }
 
     @FXML
-    protected void onRestartButtonClick() {
-        loadBoard();
-    }
+    protected void onRestartButtonClick() { loadBoard(); }
 
     @FXML
     protected void onExitButtonClick() {
@@ -140,7 +162,6 @@ public class BlockFillBoardController {
         }
     }
 
-    ///TODO Very big honkagolongaloos switch statement for each board that disables squares
     private void createBoardShape(int boardNum) {
         switch (boardNum) {
             case 0: // Hard Level 8 ---- easy0.fxml
@@ -162,33 +183,122 @@ public class BlockFillBoardController {
                 extraditeSquare(2, 0);
                 extraditeSquare(3, 0);
                 extraditeSquare(3, 1);
-                extraditeSquare(0, 4);
-                extraditeSquare(3, 4);
-                setStartingSquare(1, 2);
+                extraditeSquare(0, 5);
+                extraditeSquare(3, 5);
+                setStartingSquare(2, 1);
                 break;
             case 2: // Hard Level 5 ---- easy2.fxml
-
+                extraditeSquare(0, 1);
+                extraditeSquare(0, 2);
+                extraditeSquare(1, 2);
+                extraditeSquare(0, 3);
+                extraditeSquare(3, 3);
+                extraditeSquare(0, 4);
+                extraditeSquare(3, 4);
+                extraditeSquare(0, 5);
+                extraditeSquare(1, 5);
+                extraditeSquare(3, 5);
+                extraditeSquare(0, 6);
+                extraditeSquare(1, 6);
+                setStartingSquare(4, 0);
                 break;
             case 3: // Hard Level 6 ---- easy3.fxml
-
+                extraditeSquare(0, 0);
+                extraditeSquare(2, 1);
+                extraditeSquare(3, 1);
+                extraditeSquare(1, 2);
+                extraditeSquare(4, 3);
+                extraditeSquare(2, 4);
+                extraditeSquare(4, 4);
+                extraditeSquare(1, 5);
+                extraditeSquare(2, 5);
+                extraditeSquare(0, 6);
+                extraditeSquare(1, 6);
+                extraditeSquare(2, 6);
+                extraditeSquare(5, 6);
+                setStartingSquare(3, 2);
                 break;
             case 4: // Hard Level 7 ---- easy4.fxml
-
+                extraditeSquare(0, 2);
+                extraditeSquare(3, 2);
+                extraditeSquare(0, 4);
+                extraditeSquare(3, 4);
+                extraditeSquare(4, 4);
+                setStartingSquare(2, 0);
                 break;
             case 5: // Hard Level 15 ---- easy5.fxml
-
+                extraditeSquare(4, 0);
+                extraditeSquare(2, 1);
+                extraditeSquare(4, 1);
+                extraditeSquare(3, 2);
+                extraditeSquare(4, 2);
+                extraditeSquare(4, 3);
+                extraditeSquare(2, 4);
+                extraditeSquare(4, 4);
+                extraditeSquare(0, 6);
+                extraditeSquare(1, 6);
+                setStartingSquare(2, 2);
                 break;
             case 6: // Hard Level 16 ---- easy6.fxml
-
+                extraditeSquare(3, 0);
+                extraditeSquare(4, 0);
+                extraditeSquare(5, 0);
+                extraditeSquare(1, 1);
+                extraditeSquare(3, 1);
+                extraditeSquare(4, 1);
+                extraditeSquare(1, 2);
+                extraditeSquare(4, 2);
+                extraditeSquare(2, 4);
+                extraditeSquare(3, 4);
+                extraditeSquare(5, 4);
+                extraditeSquare(5, 5);
+                extraditeSquare(5, 6);
+                setStartingSquare(0, 2);
                 break;
             case 7: // Hard Level 17 ---- easy7.fxml
-
+                extraditeSquare(0, 0);
+                extraditeSquare(3, 0);
+                extraditeSquare(4, 0);
+                extraditeSquare(4, 2);
+                extraditeSquare(0, 3);
+                extraditeSquare(1, 3);
+                extraditeSquare(4, 3);
+                extraditeSquare(4, 4);
+                extraditeSquare(4, 5);
+                extraditeSquare(2, 6);
+                extraditeSquare(3, 6);
+                extraditeSquare(4, 6);
+                setStartingSquare(1, 6);
                 break;
             case 8: // Hard Level 18 ---- easy8.fxml
-
+                extraditeSquare(0, 0);
+                extraditeSquare(5, 0);
+                extraditeSquare(0, 1);
+                extraditeSquare(2, 1);
+                extraditeSquare(3, 1);
+                extraditeSquare(2, 2);
+                extraditeSquare(1, 3);
+                extraditeSquare(4, 4);
+                extraditeSquare(5, 4);
+                extraditeSquare(2, 5);
+                extraditeSquare(0, 6);
+                extraditeSquare(1, 6);
+                extraditeSquare(4, 6);
+                setStartingSquare(0, 5);
                 break;
             case 9: // Hard Level 19 ---- easy9.fxml
-
+                extraditeSquare(0, 0);
+                extraditeSquare(3, 0);
+                extraditeSquare(4, 0);
+                extraditeSquare(5, 0);
+                extraditeSquare(5, 1);
+                extraditeSquare(3, 3);
+                extraditeSquare(4, 3);
+                extraditeSquare(5, 3);
+                extraditeSquare(1, 4);
+                extraditeSquare(5, 4);
+                extraditeSquare(5, 5);
+                setStartingSquare(1, 2);
                 break;
             case 10: // Extra Hard Level 32 ---- hard0.fxml
                 extraditeSquare(2, 0);
@@ -219,62 +329,109 @@ public class BlockFillBoardController {
                 setStartingSquare(2, 2);
                 break;
             case 12: // Extra Hard Level 29 ---- hard2.fxml
-
+                extraditeSquare(3, 0);
+                extraditeSquare(2, 4);
+                extraditeSquare(2, 6);
+                setStartingSquare(0, 5);
                 break;
             case 13: // Extra Hard Level 25 ---- hard3.fxml
-
+                extraditeSquare(3, 0);
+                extraditeSquare(1, 1);
+                extraditeSquare(3, 1);
+                extraditeSquare(3, 2);
+                extraditeSquare(4, 2);
+                extraditeSquare(3, 4);
+                extraditeSquare(2, 5);
+                extraditeSquare(5, 5);
+                extraditeSquare(2, 6);
+                extraditeSquare(3, 6);
+                setStartingSquare(1, 3);
                 break;
             case 14: // Extra Hard Level 23 ---- hard4.fxml
-
+                extraditeSquare(3, 0);
+                extraditeSquare(1, 1);
+                extraditeSquare(2, 2);
+                extraditeSquare(3, 2);
+                extraditeSquare(0, 3);
+                extraditeSquare(4, 4);
+                extraditeSquare(1, 6);
+                extraditeSquare(4, 6);
+                extraditeSquare(0, 7);
+                extraditeSquare(1, 7);
+                setStartingSquare(5, 6);
                 break;
             case 15: // Extra Hard Level 22 ---- hard5.fxml
-
+                extraditeSquare(0, 0);
+                extraditeSquare(0, 1);
+                extraditeSquare(1, 1);
+                extraditeSquare(0, 4);
+                extraditeSquare(2, 4);
+                extraditeSquare(3, 4);
+                extraditeSquare(0, 5);
+                setStartingSquare(5, 2);
                 break;
             case 16: // Extra Hard Level 21 ---- hard6.fxml
-
+                extraditeSquare(3, 0);
+                extraditeSquare(5, 1);
+                extraditeSquare(2, 2);
+                extraditeSquare(5, 2);
+                extraditeSquare(6, 3);
+                extraditeSquare(2, 4);
+                extraditeSquare(1, 5);
+                extraditeSquare(2, 5);
+                extraditeSquare(4, 6);
+                extraditeSquare(5, 6);
+                extraditeSquare(6, 6);
+                setStartingSquare(0, 3);
                 break;
             case 17: // Extra Hard Level 15 ---- hard7.fxml
-
+                extraditeSquare(0, 0);
+                extraditeSquare(4, 0);
+                extraditeSquare(2, 1);
+                extraditeSquare(1, 2);
+                extraditeSquare(1, 3);
+                extraditeSquare(4, 3);
+                extraditeSquare(1, 4);
+                extraditeSquare(0, 6);
+                extraditeSquare(0, 7);
+                extraditeSquare(1, 7);
+                extraditeSquare(2, 7);
+                extraditeSquare(3, 7);
+                extraditeSquare(5, 7);
+                setStartingSquare(4, 7);
                 break;
             case 18: // Extra Hard Level 41 ---- hard8.fxml
-
+                extraditeSquare(3, 1);
+                extraditeSquare(4, 1);
+                extraditeSquare(5, 1);
+                extraditeSquare(1, 2);
+                extraditeSquare(4, 2);
+                extraditeSquare(0, 4);
+                extraditeSquare(0, 5);
+                extraditeSquare(2, 5);
+                extraditeSquare(5, 5);
+                extraditeSquare(0, 6);
+                setStartingSquare(1, 3);
                 break;
             case 19: // Extra Hard Level 28 ---- hard9.fxml
-
+                extraditeSquare(2, 0);
+                extraditeSquare(5, 0);
+                extraditeSquare(0, 1);
+                extraditeSquare(2, 3);
+                extraditeSquare(2, 4);
+                extraditeSquare(4, 4);
+                extraditeSquare(5, 4);
+                extraditeSquare(4, 5);
+                extraditeSquare(5, 5);
+                extraditeSquare(4, 6);
+                extraditeSquare(5, 6);
+                setStartingSquare(0, 2);
                 break;
         }
-    }
-
-    private boolean hasAdjacentSameColor(Node node, GridPane gridPane) {
-        Integer colIndex = GridPane.getColumnIndex(node);
-        Integer rowIndex = GridPane.getRowIndex(node);
-
-        int nodeCol = (colIndex == null) ? 0 : colIndex;
-        int nodeRow = (rowIndex == null) ? 0 : rowIndex;
-
-        if (!(node instanceof Rectangle rect)) return false;
-
-
-        int[][] adjacentCoords = {
-                {nodeCol, nodeRow - 1},
-                {nodeCol, nodeRow + 1},
-                {nodeCol - 1, nodeRow},
-                {nodeCol + 1, nodeRow}
-        };
-        for (int[] coord : adjacentCoords) {
-            Node adjacentNode = getSpecificNode(coord[0], coord[1], gridPane);
-            if (adjacentNode instanceof Rectangle adjacentRect) {
-                Paint adjacentColor = adjacentRect.getFill();
-                if (adjacentColor.equals(color)) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
     private void updateDisablingForCellPlus(Node node, GridPane gridPane) {
-        if (!(node instanceof Rectangle rect)) return;
+//        if (!(node instanceof Rectangle rect)) return;
 
         Integer colIndex = GridPane.getColumnIndex(node);
         Integer rowIndex = GridPane.getRowIndex(node);
@@ -298,18 +455,6 @@ public class BlockFillBoardController {
                 } else if (checkRect.getFill() == fillColor) {
                     checkRect.setDisable(false);
                 }
-//                if (!hasAdjacentSameColor(checkNode, gridPane)) {
-//                    if (Objects.equals(checkRect.getFill(), fillColor )) {
-//                        checkRect.setDisable(true);
-//                        checkRect.setFill(color);
-//                    }
-//
-//                } else {
-//                    checkRect.setDisable(false);
-//                    if (checkRect.getFill() != backgroundColor && checkRect.getFill() != color){
-//                        checkRect.setFill(fillColor);
-//                    }
-//                }
             }
         }
     }
@@ -327,6 +472,8 @@ public class BlockFillBoardController {
         if (square instanceof Rectangle rect) {
             rect.setFill(color);
             rect.setDisable(false);
+            currentCell = rect;
+            updateDisablingForCellPlus(rect, gridBoardDisplay);
         }
     }
 
@@ -338,9 +485,7 @@ public class BlockFillBoardController {
             int nodeCol = (colIndex == null) ? 0 : colIndex;
             int nodeRow = (rowIndex == null) ? 0 : rowIndex;
 
-            if (nodeCol == col && nodeRow == row) {
-                return node;
-            }
+            if (nodeCol == col && nodeRow == row) { return node; }
         }
         return null;
     }

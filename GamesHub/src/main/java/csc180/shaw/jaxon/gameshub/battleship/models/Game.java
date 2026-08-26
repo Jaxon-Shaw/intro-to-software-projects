@@ -1,6 +1,8 @@
 package csc180.shaw.jaxon.gameshub.battleship.models;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.Random;
 
 public class Game {
@@ -11,14 +13,12 @@ public class Game {
 
     public Player currentPlayer;
     public Player enemy;
-    private static final ArrayList<int[]> aiTargetQueue = new ArrayList<>();
 
-    private static int firstHitRow = -1;
-    private static int firstHitColumn = -1;
-    private static int lastHitRow = -1;
-    private static int lastHitColumn = -1;
-    private static boolean hunting = false;
-    private static String lockedDirection = null;
+    private boolean hunting = false;
+    private String lockedDirection = null;
+    private int firstHitRow = -1;
+    private int firstHitColumn = -1;
+    private Deque<int[]> aiTargetQueue = new ArrayDeque<>();
 
     public void start(String p1Name, String p2Name, boolean p2AI) {
         player1 = new Player(p1Name, new Board());
@@ -84,126 +84,243 @@ public class Game {
 
 //region ai attack code
     public void aiTakeAttack() {
-        Random numberGenerator = new Random();
+        Random random = new Random();
         boolean continueAttacking = true;
-        while (continueAttacking && !player1.getFleet().allSunk() && !player2.getFleet().allSunk()) {
-            int row, column;
-            if (!aiTargetQueue.isEmpty()) {
-                int[] coords = aiTargetQueue.removeFirst();
-                row = coords[0];
-                column = coords[1];
-                if (!isValidTarget(row, column)) continue;
-            } else {
-                do {
-                    row = numberGenerator.nextInt(10);
-                    column = numberGenerator.nextInt(10);
-                } while ((row + column) % 2 == 1 || !isValidTarget(row, column));
-                firstHitRow = firstHitColumn = lastHitColumn = lastHitRow = -1;
-                hunting = false;
-                lockedDirection = null;
+
+        while (continueAttacking
+                && !player1.getFleet().allSunk()
+                && !player2.getFleet().allSunk()) {
+
+            int[] target = getAiTarget(random);
+
+            if (target == null) {
+                continue;
             }
+
+            int row = target[0];
+            int column = target[1];
+
             Coordinate coordinate = new Coordinate(row, column);
+
             player2.setAttackCount(player2.getAttackCount() + 1);
+
             if (player1.board.attack(coordinate)) {
-                Ship ship = player1.getFleet().getShipByCoordinate(coordinate);
-                ship.setHealth(ship.getHealth() - 1);
-                player2.setShipsHit(player2.getShipsHit() + 1);
-                if (ship.getHealth() == 0) {
-                    player2.setSankCount(player2.getSankCount() + 1);
-                    resetAi();
-                } else {
-                    if (!hunting) {
-                        firstHitRow = lastHitRow = row;
-                        firstHitColumn = lastHitColumn = column;
-                        hunting = true;
-                        queueAdjacent(row, column);
-                    } else if (lockedDirection == null) {
-                        setLockedDirection(row, column);
-                        queueFullLine();
-                    }
-                    lastHitRow = row;
-                    lastHitColumn = column;
-                }
+                handleAiHit(row, column);
             } else {
+                handleAiMiss(row, column);
                 continueAttacking = false;
-                player2.setMissCount(player2.getMissCount() + 1);
-                if (lockedDirection != null) {
-                    removeBadInQueue();
-                }
             }
         }
     }
 
-    private static void removeBadInQueue() {
-        aiTargetQueue.sort((a, b) -> {
-            int cmp = Integer.compare(b[0], a[0]);
-            return (cmp != 0) ? cmp : Integer.compare(b[1], a[1]);
-        });
+    private int[] getAiTarget(Random random) {
 
+        while (!aiTargetQueue.isEmpty()) {
+            int[] target = aiTargetQueue.removeFirst();
 
-        if (lockedDirection.equals("horizontal")) {
-            for (int i = aiTargetQueue.size() - 1; i >= 0; i--) {
-                if (aiTargetQueue.get(i)[1] > lastHitColumn) {
-                    aiTargetQueue.remove(i);
-                }
+            if (isValidTarget(target[0], target[1])) {
+                return target;
             }
-        } else if (lockedDirection.equals("vertical")) {
-            for (int i = aiTargetQueue.size() - 1; i >= 0; i--) {
-                if (aiTargetQueue.get(i)[0] > lastHitRow) {
-                    aiTargetQueue.remove(i);
-                }
-            }
+        }
+
+        int row;
+        int column;
+
+        do {
+            row = random.nextInt(10);
+            column = random.nextInt(10);
+        } while ((row + column) % 2 == 1 || !isValidTarget(row, column));
+
+        resetAi();
+
+        return new int[]{row, column};
+    }
+
+    private void handleAiHit(int row, int column) {
+
+        Ship ship = player1.getFleet()
+                .getShipByCoordinate(new Coordinate(row, column));
+
+        ship.setHealth(ship.getHealth() - 1);
+        player2.setShipsHit(player2.getShipsHit() + 1);
+
+        if (ship.getHealth() == 0) {
+            player2.setSankCount(player2.getSankCount() + 1);
+            resetAi();
+            return;
+        }
+
+        if (!hunting) {
+            firstHitRow = row;
+            firstHitColumn = column;
+            hunting = true;
+
+            queueAdjacent(row, column);
+
+        } else if (lockedDirection == null) {
+            setLockedDirection(row, column);
+            queueFullLine();
         }
     }
 
-    private void queueFullLine() {
+    private void handleAiMiss(int row, int column) {
+        player2.setMissCount(player2.getMissCount() + 1);
+
+        if (lockedDirection != null) {
+            reverseDirection(row, column);
+        }
+    }
+
+    private void reverseDirection(int row, int column) {
+
         aiTargetQueue.clear();
+
         if (lockedDirection.equals("horizontal")) {
-            for (int currentColumn = firstHitColumn + 1; currentColumn < 10; currentColumn++) {
-                if (!player1.board.getCell(new Coordinate(firstHitRow, currentColumn)).isHit()) {
-                    aiTargetQueue.add(new int[]{firstHitRow, currentColumn});
+
+            int oppositeColumn =
+                    column > firstHitColumn
+                            ? firstHitColumn - 1
+                            : firstHitColumn + 1;
+
+            while (oppositeColumn >= 0 && oppositeColumn < 10) {
+
+                if (isValidTarget(firstHitRow, oppositeColumn)) {
+                    aiTargetQueue.add(
+                            new int[]{firstHitRow, oppositeColumn}
+                    );
                 }
+
+                oppositeColumn +=
+                        column > firstHitColumn ? -1 : 1;
             }
-            for (int currentColumn = firstHitColumn; currentColumn > 0; currentColumn--) {
-                if (!player1.board.getCell(new Coordinate(firstHitRow, currentColumn)).isHit()) {
-                    aiTargetQueue.add(new int[]{firstHitRow, currentColumn});
+
+        } else {
+
+            int oppositeRow =
+                    row > firstHitRow
+                            ? firstHitRow - 1
+                            : firstHitRow + 1;
+
+            while (oppositeRow >= 0 && oppositeRow < 10) {
+
+                if (isValidTarget(oppositeRow, firstHitColumn)) {
+                    aiTargetQueue.add(
+                            new int[]{oppositeRow, firstHitColumn}
+                    );
                 }
-            }
-        } else if (lockedDirection.equals("vertical")) {
-            for (int currentRow = firstHitRow + 1; currentRow < 10; currentRow++) {
-                if (!player1.board.getCell(new Coordinate(currentRow, firstHitColumn)).isHit()) {
-                    aiTargetQueue.add(new int[]{currentRow, firstHitColumn});
-                }
-            }
-            for (int currentRow = firstHitRow - 1; currentRow > 0; currentRow--) {
-                if (!player1.board.getCell(new Coordinate(currentRow, firstHitColumn)).isHit()) {
-                    aiTargetQueue.add(new int[]{currentRow, firstHitColumn});
-                }
+
+                oppositeRow +=
+                        row > firstHitRow ? -1 : 1;
             }
         }
     }
 
     private void queueAdjacent(int row, int column) {
-        if (isValidTarget(row + 1, column)) aiTargetQueue.add(new int[]{row + 1, column});
-        if (isValidTarget(row, column + 1)) aiTargetQueue.add(new int[]{row, column + 1});
-        if (isValidTarget(row - 1, column)) aiTargetQueue.add(new int[]{row - 1, column});
-        if (isValidTarget(row, column - 1)) aiTargetQueue.add(new int[]{row, column - 1});
+
+        if (isValidTarget(row + 1, column))
+            aiTargetQueue.add(new int[]{row + 1, column});
+
+        if (isValidTarget(row, column + 1))
+            aiTargetQueue.add(new int[]{row, column + 1});
+
+        if (isValidTarget(row - 1, column))
+            aiTargetQueue.add(new int[]{row - 1, column});
+
+        if (isValidTarget(row, column - 1))
+            aiTargetQueue.add(new int[]{row, column - 1});
     }
 
-    private static void setLockedDirection(int row, int column) {
-        if (row == firstHitRow) lockedDirection = "horizontal";
-        else if (column == firstHitColumn) lockedDirection = "vertical";
+    private void setLockedDirection(int row, int column) {
+
+        if (row == firstHitRow) {
+            lockedDirection = "horizontal";
+        } else {
+            lockedDirection = "vertical";
+        }
     }
 
-    private boolean isValidTarget(int row, int column) {
-        return row >= 0 && row < 10 && column >= 0 && column < 10 && !player1.board.getCell(new Coordinate(row, column)).isHit();
-    }
-
-    private static void resetAi() {
-        firstHitRow = firstHitColumn = lastHitColumn = lastHitRow = -1;
+    private void resetAi() {
+        firstHitRow = -1;
+        firstHitColumn = -1;
         hunting = false;
         lockedDirection = null;
         aiTargetQueue.clear();
+    }
+
+    private void queueFullLine() {
+        aiTargetQueue.clear();
+
+        if (lockedDirection.equals("horizontal")) {
+
+            // Search to the right
+            for (int currentColumn = firstHitColumn + 1;
+                 currentColumn < 10;
+                 currentColumn++) {
+
+                if (!player1.board
+                        .getCell(new Coordinate(firstHitRow, currentColumn))
+                        .isHit()) {
+
+                    aiTargetQueue.add(
+                            new int[]{firstHitRow, currentColumn}
+                    );
+                }
+            }
+
+            // Search to the left
+            for (int currentColumn = firstHitColumn - 1;
+                 currentColumn >= 0;
+                 currentColumn--) {
+
+                if (!player1.board
+                        .getCell(new Coordinate(firstHitRow, currentColumn))
+                        .isHit()) {
+
+                    aiTargetQueue.add(
+                            new int[]{firstHitRow, currentColumn}
+                    );
+                }
+            }
+
+        } else if (lockedDirection.equals("vertical")) {
+
+            // Search downward
+            for (int currentRow = firstHitRow + 1;
+                 currentRow < 10;
+                 currentRow++) {
+
+                if (!player1.board
+                        .getCell(new Coordinate(currentRow, firstHitColumn))
+                        .isHit()) {
+
+                    aiTargetQueue.add(
+                            new int[]{currentRow, firstHitColumn}
+                    );
+                }
+            }
+
+            // Search upward
+            for (int currentRow = firstHitRow - 1;
+                 currentRow >= 0;
+                 currentRow--) {
+
+                if (!player1.board
+                        .getCell(new Coordinate(currentRow, firstHitColumn))
+                        .isHit()) {
+
+                    aiTargetQueue.add(
+                            new int[]{currentRow, firstHitColumn}
+                    );
+                }
+            }
+        }
+    }
+
+
+
+    private boolean isValidTarget(int row, int column) {
+        Coordinate coordinate = new Coordinate(row, column);
+        return  player1.board.inBounds(coordinate) && !player1.board.getCell(coordinate).isHit();
     }
 //endregion
 

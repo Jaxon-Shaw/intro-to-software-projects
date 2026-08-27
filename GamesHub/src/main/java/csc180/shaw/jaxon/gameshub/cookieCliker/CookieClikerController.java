@@ -1,4 +1,6 @@
 package csc180.shaw.jaxon.gameshub.cookieCliker;
+import csc180.shaw.jaxon.gameshub.HelloApplication;
+import csc180.shaw.jaxon.gameshub.cookieCliker.models.SaveManager;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
@@ -11,6 +13,12 @@ import javafx.util.Duration;
 import javax.swing.*;
 import java.io.IOException;
 import java.util.Random;
+import tools.jackson.databind.ObjectMapper;
+import javafx.stage.FileChooser;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import static csc180.shaw.jaxon.gameshub.HelloController.getT;
 import static javafx.animation.Animation.INDEFINITE;
@@ -72,6 +80,14 @@ public class CookieClikerController {
     public Text bankUpgradePrice;
     public Text templeUpgradePrice;
     public Text wizardTowerUpgradePrice;
+    public Text extraCursorCount;
+    public Text davidCount;
+    public Text cookieFarmCount;
+    public Text craftingTableCount;
+    public Text forgeCount;
+    public Text gluttonyCount;
+    public Text templeCount;
+    public Text lichLairCount;
     //endregion
     //region Box IDs
     public Rectangle clickPowerBox;
@@ -91,12 +107,11 @@ public class CookieClikerController {
     //endregion
 
 
-
-
     //region Gui Check
     @FXML
     protected void initialize(){
         checkBuyGui();
+        passiveIncome();
     }
     protected void checkBuyGui(){
         Timeline checkGUI = new Timeline(new KeyFrame(Duration.seconds(.01), e -> {
@@ -194,6 +209,57 @@ public class CookieClikerController {
         int globalPerSecond = globalPassive + tempHold;
         clickPerSecondText.setText("per second: " + globalPerSecond);
     }
+    protected void passiveIncome(){
+        Timeline extraClicker = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+            cookies = cookies + testPassiveIncome + cookieUpgrade;
+            cookieCount.setText("Cookies: " + cookies);
+        }));
+        extraClicker.setCycleCount(INDEFINITE);
+        Timeline david = new Timeline(new KeyFrame(Duration.seconds(0.5), e -> {
+            cookies = cookies + grandmaPassiveIncome + cookieUpgrade;
+            cookieCount.setText("Cookies: " + cookies);
+        }));
+        david.setCycleCount(INDEFINITE);
+        Timeline kensFarm = new Timeline(new KeyFrame(Duration.seconds(0.25), e -> {
+            cookies = cookies + farmPassiveIncome + cookieUpgrade;
+            cookieCount.setText("Cookies: " + cookies);
+        }));
+        kensFarm.setCycleCount(INDEFINITE);
+        Timeline craftingTable = new Timeline(new KeyFrame(Duration.seconds(0.1), e -> {
+            cookies = cookies + minePassiveIncome + cookieUpgrade;
+            cookieCount.setText("Cookies: " + cookies);
+        }));
+        craftingTable.setCycleCount(INDEFINITE);
+        Timeline starForge = new Timeline(new KeyFrame(Duration.seconds(0.05), e -> {
+            cookies = cookies + factoryPassiveIncome + cookieUpgrade;
+            cookieCount.setText("Cookies: " + cookies);
+        }));
+        starForge.setCycleCount(INDEFINITE);
+        Timeline gluttony = new Timeline(new KeyFrame(Duration.seconds(0.025), e -> {
+            cookies = cookies + bankPassiveIncome + cookieUpgrade;
+            cookieCount.setText("Cookies: " + cookies);
+        }));
+        gluttony.setCycleCount(INDEFINITE);
+        Timeline adoTemple = new Timeline(new KeyFrame(Duration.seconds(0.01), e -> {
+            cookies = cookies + templePassiveIncome + cookieUpgrade;
+            cookieCount.setText("Cookies: " + cookies);
+        }));
+        adoTemple.setCycleCount(INDEFINITE);
+        Timeline lichLair = new Timeline(new KeyFrame(Duration.seconds(0.005), e -> {
+            cookies = cookies + wizardTowerPassiveIncome + cookieUpgrade;
+            cookieCount.setText("Cookies: " + cookies);
+        }));
+        lichLair.setCycleCount(INDEFINITE);
+
+        extraClicker.play();
+        david.play();
+        kensFarm.play();
+        craftingTable.play();
+        starForge.play();
+        gluttony.play();
+        adoTemple.play();
+        lichLair.play();
+    }
     //endregion
     //region Exit Button
     @FXML
@@ -207,6 +273,97 @@ public class CookieClikerController {
 
     public <T> T changeScene(String viewName, String title, boolean maximized, boolean centered) throws IOException {
         return getT(viewName, title, maximized, centered);
+    }
+    //endregion
+    //region Save and Load Buttons
+    @FXML
+    protected void onSaveButtonClick(){
+        SaveManager saveManager = new SaveManager(cookies, clickPower, clickPerSecond, cookieUpgrade, critChance, critMultiplier, cursorPrice, cookiePrice, crit1Price, crit2Price, extraClickPrice, grandmaPrice, farmPrice, minePrice, factoryPrice, bankPrice, templePrice, wizardTowerPrice, testPassiveIncome, grandmaPassiveIncome, farmPassiveIncome, minePassiveIncome, factoryPassiveIncome, bankPassiveIncome, templePassiveIncome, wizardTowerPassiveIncome);
+        FileChooser fileChooser = new FileChooser();
+        String folder = "gamesHub\\src\\main\\resources\\cookieClickerSaveData";
+
+        fileChooser.setInitialDirectory(new File(folder));
+        File file = fileChooser.showSaveDialog(HelloApplication.primaryStage);
+        if (file != null) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+                ObjectMapper mapper = new ObjectMapper();
+                String json = mapper.writeValueAsString(saveManager);
+                writer.write(json);
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
+        }
+    }
+    @FXML
+    protected void onLoadButtonClick(){
+        FileChooser fileChooser = new FileChooser();
+        String folder = "gamesHub\\src\\main\\resources\\cookieClickerSaveData";
+
+        fileChooser.setInitialDirectory(new File(folder));
+        File file = fileChooser.showOpenDialog(HelloApplication.primaryStage);
+        if (file != null) {
+            ObjectMapper mapper = new ObjectMapper();
+            SaveManager saveManager = mapper.readValue(file, SaveManager.class);
+            //region Loading Data
+            cookies = saveManager.getCookies();
+            clickPower = saveManager.getClickPower();
+            clickPerSecond = saveManager.getClickPerSecond();
+            cookieUpgrade = saveManager.getCookieUpgrade();
+            critChance = saveManager.getCritChance();
+            critMultiplier = saveManager.getCritMultiplier();
+            cursorPrice = saveManager.getCursorPrice();
+            cookiePrice = saveManager.getCookiePrice();
+            crit1Price = saveManager.getCrit1Price();
+            crit2Price = saveManager.getCrit2Price();
+            extraClickPrice = saveManager.getExtraClickPrice();
+            grandmaPrice = saveManager.getGrandmaPrice();
+            farmPrice = saveManager.getFarmPrice();
+            minePrice = saveManager.getMinePrice();
+            factoryPrice = saveManager.getFactoryPrice();
+            bankPrice = saveManager.getBankPrice();
+            templePrice = saveManager.getTemplePrice();
+            wizardTowerPrice = saveManager.getWizardTowerPrice();
+            testPassiveIncome = saveManager.getTestPassiveIncome();
+            grandmaPassiveIncome = saveManager.getGrandmaPassiveIncome();
+            farmPassiveIncome = saveManager.getFarmPassiveIncome();
+            minePassiveIncome = saveManager.getMinePassiveIncome();
+            factoryPassiveIncome = saveManager.getFactoryPassiveIncome();
+            bankPassiveIncome = saveManager.getBankPassiveIncome();
+            templePassiveIncome = saveManager.getTemplePassiveIncome();
+            wizardTowerPassiveIncome = saveManager.getWizardTowerPassiveIncome();
+            //endregion
+            //region Loading TEXT yyyayy
+            cookieCount.textProperty().setValue("Cookies: " + cookies);
+            cursorUpgradePrice.setText(cursorPrice + " Cookies");
+            cookieUpgradePrice.setText(cookiePrice + " Cookies");
+            critChancePrice.setText(crit1Price +  " Cookies");
+            critMultiplierPrice.setText(crit2Price +  " Cookies");
+            cookieUpgradeText.setText("Extra Global Cookies: " + cookieUpgrade);
+            clickPowerText.setText("Click Power: " + clickPower);
+            critChanceText.setText("Crit Chance: " + critChance + "%");
+            if(critChance == 100){
+                critChancePrice.setText("Max Level");
+                }
+            multiplierText.setText("Crit Multiplier: " + critMultiplier + "x");
+            clickPerSecondGUI();
+            extraClickerUpgradePrice.textProperty().setValue(extraClickPrice + " Cookies");
+            grandmaUpgradePrice.textProperty().setValue(grandmaPrice + " Cookies");
+            farmUpgradePrice.textProperty().setValue(farmPrice + " Cookies");
+            mineUpgradePrice.textProperty().setValue(minePrice + " Cookies");
+            factoryUpgradePrice.textProperty().setValue(factoryPrice + " Cookies");
+            bankUpgradePrice.textProperty().setValue(bankPrice + " Cookies");
+            templeUpgradePrice.textProperty().setValue(templePrice + " Cookies");
+            wizardTowerUpgradePrice.textProperty().setValue(wizardTowerPrice + " Cookies");
+            extraCursorCount.setText("Extra Cursor: " + testPassiveIncome);
+            davidCount.textProperty().setValue("David: " + grandmaPassiveIncome);
+            cookieFarmCount.textProperty().setValue("Ken's Matcha Cookie Farm: " + farmPassiveIncome);
+            craftingTableCount.textProperty().setValue("Crafting Table: " + minePassiveIncome);
+            forgeCount.textProperty().setValue("Star Forge: " + factoryPassiveIncome);
+            gluttonyCount.textProperty().setValue("Gluttony: " + bankPassiveIncome);
+            templeCount.textProperty().setValue("Ado Temple: " + templePassiveIncome);
+            lichLairCount.textProperty().setValue("Lich's Lair: " + wizardTowerPassiveIncome);
+            //endregion
+        }
     }
     //endregion
     //region Main Click
@@ -294,14 +451,7 @@ public class CookieClikerController {
             double tempHold = extraClickPrice * 1.15;
             extraClickPrice = (int) tempHold;
             extraClickerUpgradePrice.textProperty().setValue(extraClickPrice + " Cookies");
-        }
-        Timeline autoClickLoop = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
-            cookies = cookies + testPassiveIncome + cookieUpgrade;
-            cookieCount.setText("Cookies: " + cookies);
-        }));
-        autoClickLoop.setCycleCount(INDEFINITE);
-        if (testPassiveIncome == 1) {
-            autoClickLoop.play();
+            extraCursorCount.setText("Extra Cursor: " + testPassiveIncome);
         }
     }
     @FXML
@@ -316,14 +466,7 @@ public class CookieClikerController {
             double tempHold = grandmaPrice * 1.16;
             grandmaPrice = (int) tempHold;
             grandmaUpgradePrice.textProperty().setValue(grandmaPrice + " Cookies");
-        }
-        Timeline autoClickLoop = new Timeline(new KeyFrame(Duration.seconds(0.5), e -> {
-            cookies = cookies + grandmaPassiveIncome + cookieUpgrade;
-            cookieCount.setText("Cookies: " + cookies);
-        }));
-        autoClickLoop.setCycleCount(INDEFINITE);
-        if (grandmaPassiveIncome == 1) {
-            autoClickLoop.play();
+            davidCount.textProperty().setValue("David: " + grandmaPassiveIncome);
         }
     }
     @FXML
@@ -338,14 +481,7 @@ public class CookieClikerController {
             double tempHold = farmPrice * 1.17;
             farmPrice = (int) tempHold;
             farmUpgradePrice.textProperty().setValue(farmPrice + " Cookies");
-        }
-        Timeline autoClickLoop = new Timeline(new KeyFrame(Duration.seconds(0.25), e -> {
-            cookies = cookies + farmPassiveIncome + cookieUpgrade;
-            cookieCount.setText("Cookies: " + cookies);
-        }));
-        autoClickLoop.setCycleCount(INDEFINITE);
-        if (farmPassiveIncome == 1) {
-            autoClickLoop.play();
+            cookieFarmCount.textProperty().setValue("Ken's Matcha Cookie Farm: " + farmPassiveIncome);
         }
     }
     @FXML
@@ -360,14 +496,7 @@ public class CookieClikerController {
             double tempHold = minePrice * 1.18;
             minePrice = (int) tempHold;
             mineUpgradePrice.textProperty().setValue(minePrice + " Cookies");
-        }
-        Timeline autoClickLoop = new Timeline(new KeyFrame(Duration.seconds(0.1), e -> {
-            cookies = cookies + minePassiveIncome + cookieUpgrade;
-            cookieCount.setText("Cookies: " + cookies);
-        }));
-        autoClickLoop.setCycleCount(INDEFINITE);
-        if (minePassiveIncome == 1) {
-            autoClickLoop.play();
+            craftingTableCount.textProperty().setValue("Crafting Table: " + minePassiveIncome);
         }
     }
     @FXML
@@ -382,14 +511,7 @@ public class CookieClikerController {
             double tempHold = factoryPrice * 1.19;
             factoryPrice = (int) tempHold;
             factoryUpgradePrice.textProperty().setValue(factoryPrice + " Cookies");
-        }
-        Timeline autoClickLoop = new Timeline(new KeyFrame(Duration.seconds(0.05), e -> {
-            cookies = cookies + factoryPassiveIncome + cookieUpgrade;
-            cookieCount.setText("Cookies: " + cookies);
-        }));
-        autoClickLoop.setCycleCount(INDEFINITE);
-        if (factoryPassiveIncome == 1) {
-            autoClickLoop.play();
+            forgeCount.textProperty().setValue("Star Forge: " + factoryPassiveIncome);
         }
     }
     @FXML
@@ -404,14 +526,7 @@ public class CookieClikerController {
             double tempHold = bankPrice * 1.20;
             bankPrice = (int) tempHold;
             bankUpgradePrice.textProperty().setValue(bankPrice + " Cookies");
-        }
-        Timeline autoClickLoop = new Timeline(new KeyFrame(Duration.seconds(0.025), e -> {
-            cookies = cookies + bankPassiveIncome + cookieUpgrade;
-            cookieCount.setText("Cookies: " + cookies);
-        }));
-        autoClickLoop.setCycleCount(INDEFINITE);
-        if (bankPassiveIncome == 1) {
-            autoClickLoop.play();
+            gluttonyCount.textProperty().setValue("Gluttony: " + bankPassiveIncome);
         }
     }
     @FXML
@@ -426,14 +541,7 @@ public class CookieClikerController {
             double tempHold = templePrice * 1.21;
             templePrice = (int) tempHold;
             templeUpgradePrice.textProperty().setValue(templePrice + " Cookies");
-        }
-        Timeline autoClickLoop = new Timeline(new KeyFrame(Duration.seconds(0.01), e -> {
-            cookies = cookies + templePassiveIncome + cookieUpgrade;
-            cookieCount.setText("Cookies: " + cookies);
-        }));
-        autoClickLoop.setCycleCount(INDEFINITE);
-        if (templePassiveIncome == 1) {
-            autoClickLoop.play();
+            templeCount.textProperty().setValue("Ado Temple: " + templePassiveIncome);
         }
     }
     @FXML
@@ -448,14 +556,7 @@ public class CookieClikerController {
             double tempHold = wizardTowerPrice * 1.22;
             wizardTowerPrice = (int) tempHold;
             wizardTowerUpgradePrice.textProperty().setValue(wizardTowerPrice + " Cookies");
-        }
-        Timeline autoClickLoop = new Timeline(new KeyFrame(Duration.seconds(0.005), e -> {
-            cookies = cookies + wizardTowerPassiveIncome + cookieUpgrade;
-            cookieCount.setText("Cookies: " + cookies);
-        }));
-        autoClickLoop.setCycleCount(INDEFINITE);
-        if (wizardTowerPassiveIncome == 1) {
-            autoClickLoop.play();
+            lichLairCount.textProperty().setValue("Lich's Lair: " + wizardTowerPassiveIncome);
         }
     }
     //endregion

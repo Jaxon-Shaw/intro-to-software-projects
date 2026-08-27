@@ -280,9 +280,9 @@ public class CookieClikerController {
     protected void onSaveButtonClick(){
         SaveManager saveManager = new SaveManager(cookies, clickPower, clickPerSecond, cookieUpgrade, critChance, critMultiplier, cursorPrice, cookiePrice, crit1Price, crit2Price, extraClickPrice, grandmaPrice, farmPrice, minePrice, factoryPrice, bankPrice, templePrice, wizardTowerPrice, testPassiveIncome, grandmaPassiveIncome, farmPassiveIncome, minePassiveIncome, factoryPassiveIncome, bankPassiveIncome, templePassiveIncome, wizardTowerPassiveIncome);
         FileChooser fileChooser = new FileChooser();
-        String folder = "gamesHub\\src\\main\\resources\\cookieClickerSaveData";
+        File folder = new File("src/main/resources/cookieClickerSaveData");;
 
-        fileChooser.setInitialDirectory(new File(folder));
+        fileChooser.setInitialDirectory(folder);
         File file = fileChooser.showSaveDialog(HelloApplication.primaryStage);
         if (file != null) {
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
@@ -297,9 +297,9 @@ public class CookieClikerController {
     @FXML
     protected void onLoadButtonClick(){
         FileChooser fileChooser = new FileChooser();
-        String folder = "gamesHub\\src\\main\\resources\\cookieClickerSaveData";
+        File folder = new File("src/main/resources/cookieClickerSaveData");;
 
-        fileChooser.setInitialDirectory(new File(folder));
+        fileChooser.setInitialDirectory(folder);
         File file = fileChooser.showOpenDialog(HelloApplication.primaryStage);
         if (file != null) {
             ObjectMapper mapper = new ObjectMapper();

@@ -280,7 +280,7 @@ public class CookieClikerController {
     protected void onSaveButtonClick(){
         SaveManager saveManager = new SaveManager(cookies, clickPower, clickPerSecond, cookieUpgrade, critChance, critMultiplier, cursorPrice, cookiePrice, crit1Price, crit2Price, extraClickPrice, grandmaPrice, farmPrice, minePrice, factoryPrice, bankPrice, templePrice, wizardTowerPrice, testPassiveIncome, grandmaPassiveIncome, farmPassiveIncome, minePassiveIncome, factoryPassiveIncome, bankPassiveIncome, templePassiveIncome, wizardTowerPassiveIncome);
         FileChooser fileChooser = new FileChooser();
-        File folder = new File("src/main/resources/cookieClickerSaveData");;
+        File folder = new File("src/main/resources/cookieClickerSaveData");
 
         fileChooser.setInitialDirectory(folder);
         File file = fileChooser.showSaveDialog(HelloApplication.primaryStage);

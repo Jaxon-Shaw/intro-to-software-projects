@@ -1,11 +1,16 @@
 package csc180.shaw.jaxon.gameshub.battleship.controllers;
 
 import csc180.shaw.jaxon.gameshub.HelloApplication;
+import csc180.shaw.jaxon.gameshub.battleship.models.Board;
+import csc180.shaw.jaxon.gameshub.battleship.models.Coordinate;
 import csc180.shaw.jaxon.gameshub.battleship.models.Game;
 import csc180.shaw.jaxon.gameshub.battleship.models.Player;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import java.awt.event.MouseEvent;
@@ -15,8 +20,8 @@ import static csc180.shaw.jaxon.gameshub.battleship.controllers.StartController.
 
 public class GameEndController {
     private Game game;
-    private final int P1CENTER = 118;
-    private final int P2CENTER = 416;
+    private final int P1CENTER = 320;
+    private final int P2CENTER = 615;
 
     @FXML
     private Label winner;
@@ -40,9 +45,17 @@ public class GameEndController {
     private Label p2MissCount;
     @FXML
     private Label p2HitCount;
+    @FXML private GridPane p1Board;
+    @FXML private GridPane p2Board;
 
     protected void setGame(Game game) {
         this.game = game;
+    }
+
+    @FXML
+    protected void initialize() {
+        createBoard(p1Board);
+        createBoard(p2Board);
     }
 
     @FXML
@@ -92,5 +105,49 @@ public class GameEndController {
 
         p1MissCount.setText(String.valueOf(player1.getMissCount()));
         p2MissCount.setText(String.valueOf(player2.getMissCount()));
+
+        displayBoard(p1Board, game.getPlayer1().board);
+        displayBoard(p2Board, game.getPlayer2().board);
+    }
+
+    private void createBoard(GridPane gameBoardDisplay) {
+        gameBoardDisplay.getChildren().clear();
+
+        for (int row = 0; row < 10; row++) {
+            for (int col = 0; col < 10; col++) {
+
+                Rectangle cell = new Rectangle();
+                cell.setWidth(36);
+                cell.setHeight(36);
+                cell.setId(row+" "+col);
+                cell.setFill(Color.DODGERBLUE);
+                cell.setStroke(Color.BLACK);
+
+                gameBoardDisplay.add(cell, col, row);
+            }
+        }
+    }
+
+    private void displayBoard(GridPane displayBoard, Board board) {
+        for (javafx.scene.Node node : displayBoard.getChildren()) {
+            Integer columnIndex = GridPane.getColumnIndex(node);
+            Integer rowIndex = GridPane.getRowIndex(node);
+
+            int colIndex = (columnIndex == null) ? 0 : columnIndex;
+            int rowIdx = (rowIndex == null) ? 0 : rowIndex;
+
+            Coordinate coordinate = new Coordinate(rowIdx, colIndex);
+
+
+            if (board.getCell(coordinate).hasShip()) {
+                ((Rectangle) node).setFill(Color.GREEN);
+            }
+            if (board.getCell(coordinate).hasShip() && board.getCell(coordinate).isHit()) {
+                ((Rectangle) node).setFill(Color.DARKRED);
+            }
+            else if (board.getCell(coordinate).isHit()) {
+                ((Rectangle) node).setFill(Color.GRAY);
+            }
+        }
     }
 }

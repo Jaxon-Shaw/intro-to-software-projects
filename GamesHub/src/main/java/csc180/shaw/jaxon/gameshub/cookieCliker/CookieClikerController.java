@@ -297,7 +297,7 @@ public class CookieClikerController {
     @FXML
     protected void onLoadButtonClick(){
         FileChooser fileChooser = new FileChooser();
-        File folder = new File("src/main/resources/cookieClickerSaveData");;
+        File folder = new File("GamesHub/src/main/resources/cookieClickerSaveData");
 
         fileChooser.setInitialDirectory(folder);
         File file = fileChooser.showOpenDialog(HelloApplication.primaryStage);
